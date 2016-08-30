@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.template import loader
 
 from .forms import PublicKeyForm
-from .models import PublicKey
+from .models import PublicKey, KeyMaster, DataRequest
 
 import pdb
 
