@@ -1,13 +1,21 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
 from django.template import loader
 
 from .forms import PublicKeyForm
-from .models import PublicKey
+from .models import PublicKey, KeyMaster, DataRequest
+from .libs.mail import send_login_mail
 
 import pdb
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the securemsg index.")
+    if request.method == 'POST':
+        context = {}
+        send_login_mail(request.POST['email_address'], "foo")
+        return render(request, 'securemsg/index.html', context)
+    else:
+        context = {}
+        return render(request, 'securemsg/index.html', context)
 
 def genkey(request):
     template = loader.get_template('securemsg/genkey.html')
