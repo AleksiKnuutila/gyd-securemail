@@ -8,16 +8,6 @@ Here we will generate a <b>key</b>!
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-
-<!--
-
-Public key:
-<textarea rows="6" cols="50" name="public_key" id="public_key">
-</textarea>
-<input type="text" name="email_address" value="email address" />
-
--->
-
 <div class="row">
   <form action="{% url 'securemsg:addkey' %}" method="post" class="col s12">
     <div class="row">
@@ -47,23 +37,6 @@ Public key:
   </form>
 </div>
 
-<div class="row">
-    <form action="{% url 'securemsg:addkey' %}" method="post" class="col s12">
-      {% csrf_token %}
-        <div class="row">
-            <div class="input-field col s12">
-                <input id="example" name="example" type="text" class="validate" required="" aria-required="true">
-                <label for="example" data-error="wrong" data-success="right">Field</label>
-            </div>
-            <div class="input-field col s12">
-                <button class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
-            </div>
-        </div>
-    </form>
-</div>
-
-
-
 <br><br>
 <br><br>
 <br><br>
@@ -74,13 +47,12 @@ Private key:
 </textarea>
 
 <br>&nbsp;<br>
-<input type="button" id="generate" value="Generate New Keys"></input>
+<button class="btn waves-effect waves-light" type="button" id="generate">Generate New Key</button>
 <br>&nbsp;<br>
 <span><i><small id="time-report"></small></i></span>
 <br>&nbsp;<br>
 
-<input type="button" id="dlkey" value="Download Private Key"></input>
-
+<button class="btn waves-effect waves-light" type="button" id="dlkey">Download Private Key</button>
 
 <script type="text/javascript">
   $(function () {
