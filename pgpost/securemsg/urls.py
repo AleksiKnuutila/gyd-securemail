@@ -9,4 +9,6 @@ urlpatterns = [
     url(r'^addkey$', views.addkey, name='addkey'),
     url(r'^genkey$', views.genkey, name='genkey'),
     url(r'^encryptfile$', views.encryptfile, name='encryptfile'),
+    url(r'^addencrypted$', views.addencrypted, name='addencrypted'),
+    url(r'^sendfile_index$', views.sendfile_index, name='sendfile_index'),
 ]
