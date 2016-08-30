@@ -2,7 +2,8 @@
 
 {% block body_block %}
 
-Here we will generate a <b>key</b>!
+  Encrypt file!!
+
 <br><br>
 <br><br>
 
@@ -19,14 +20,18 @@ Here we will generate a <b>key</b>!
       </div>
       -->
       <div class="input-field col s6">
-        <input id="email_address" name="email_address" type="text">
-        <label for="email_address" data-error="wrong" data-success="right">Email Address</label>
+
+        <input id="myFile" type="file"/>
+        <input type="button" value="encrypt" id="encryptbutton" />
+        <input type="button" value="dl and decrypt" id="dldecrypt" />
+
       </div>
       <div class="input-field col s6">
         <!--
-        <input id="public_key" name="public_key" type="text"> 
+        <input id="public_key" name="public_key" type="text">
         <label for="public_key" data-error="wrong" data-success="right">Email Address</label>
         -->
+        <textarea id="public_key" name="public_key" class="materialize-textarea"></textarea>
         <textarea id="public_key" name="public_key" class="materialize-textarea"></textarea>
         <label for="public_key" data-error="wrong" data-success="right">Public Key</label>
       </div>
@@ -56,6 +61,44 @@ Private key:
 
 <script type="text/javascript">
   $(function () {
+
+function dataURItoBlob(dataURI) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  var blob = new Blob([ab], {type: mimeString});
+  return blob;
+
+  // Old code
+  // var bb = new BlobBuilder();
+  // bb.append(ab);
+  // return bb.getBlob(mimeString);
+}
+
+    var decrypt = function decrypt(encryptedKey, encryptedData) {
+      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
+        var rsaDecrypt = new JSEncrypt();
+        var privateKey = $('#privkey').val();
+        rsaDecrypt.setPrivateKey(privateKey);
+        var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
+        var b64content = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
+        var blob = dataURItoBlob(b64content);
+        //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "decoded.file");
+      });
+    }
 
     //Change the key size value for new keys
     $(".change-key-size").each(function (index, value) {
@@ -107,9 +150,35 @@ Private key:
       saveAs(blob, "privatekey.rsa");
     }
 
+    var formfile = '';
+    var readfile = function readfile() {
+      var file = document.getElementById("myFile").files[0];
+      var reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "special.file");
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+
+//    var dlEncryptedData = function dlEncryptedData() {
+//      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
+//        var rsaDecrypt = new JSEncrypt();
+//        var privateKey = $('#privkey').val();
+//        rsaDecrypt.setPrivateKey(privateKey);
+//        var aeskey = JSON.parse(rsaDecrypt.decrypt(encryptedKey));
+//        return JSON.parse(CryptoJS.AES.decrypt(encryptedData, aeskey['key']).toString(CryptoJS.enc.Utf8));
+//      });
+//     }
+
     // If they wish to generate new keys.
     $('#generate').click(generateKeys);
     $('#dlkey').click(downloadKey);
+    $('#encryptbutton').click(readfile);
+//    $('#dldecrypt').click(dlEncryptedData);
+    $('#dldecrypt').click(decrypt);
     //generateKeys();
 
     // code below from https://medium.com/@tikiatua/symmetric-and-asymmetric-encryption-with-javascript-and-go-240043e56daf
@@ -136,8 +205,9 @@ Private key:
       // Create a new encryption key (with a specified length)
       var key = genRandomString(50);
       // convert data to a json string
-      var dataAsString = JSON.stringify(data);
-      // encrypt the data symmetrically 
+      //var dataAsString = JSON.stringify(data);
+      var dataAsString = data;
+      // encrypt the data symmetrically
       // (the cryptojs library will generate its own 256bit key!!)
       var aesEncrypted = CryptoJS.AES.encrypt(dataAsString, key);
       // get the symmetric key and initialization vector from
@@ -147,7 +217,7 @@ Private key:
         key : String(key),
         iv : String(aesEncrypted.iv)
       });
-      // the data is base64 encoded 
+      // the data is base64 encoded
       var encryptedMessage = aesEncrypted.toString();
 
       // we create a new JSEncrypt object for rsa encryption
@@ -166,15 +236,8 @@ Private key:
       return payload;
     };
 
-    var decrypt = function decrypt(encryptedKey, encryptedData) {
-      var rsaDecrypt = new JSEncrypt();
-      var privateKey = $('#privkey').val();
-      rsaDecrypt.setPrivateKey(privateKey);
-      var aeskey = JSON.parse(rsaDecrypt.decrypt(encryptedKey));
-      return JSON.parse(CryptoJS.AES.decrypt(encryptedData, aeskey['key']).toString(CryptoJS.enc.Utf8));
-    }
-
   });
+
 </script>
 
 {% endblock %}
