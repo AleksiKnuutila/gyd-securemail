@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 
 from .forms import PublicKeyForm
-from .models import PublicKey
+from .models import PublicKey, KeyMaster, DataRequest
 from .libs.mail import send_login_mail
 
 import pdb
