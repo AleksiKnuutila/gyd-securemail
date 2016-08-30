@@ -8,14 +8,61 @@ Here we will generate a <b>key</b>!
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'securemsg:addkey' %}" method="post">
-{% csrf_token %}
+
+<!--
+
 Public key:
 <textarea rows="6" cols="50" name="public_key" id="public_key">
 </textarea>
 <input type="text" name="email_address" value="email address" />
-<input type="submit" value="Submit" />
-</form>
+
+-->
+
+<div class="row">
+  <form action="{% url 'securemsg:addkey' %}" method="post" class="col s12">
+    <div class="row">
+      {% csrf_token %}
+      <!--
+      <div class="input-field col s6">
+        <textarea rows="6" cols="50" id="public_key" class="materialize-textarea"></textarea>
+        <label for="public_key">Public Key</label>
+      </div>
+      -->
+      <div class="input-field col s6">
+        <input id="email_address" name="email_address" type="text">
+        <label for="email_address" data-error="wrong" data-success="right">Email Address</label>
+      </div>
+      <div class="input-field col s6">
+        <!--
+        <input id="public_key" name="public_key" type="text"> 
+        <label for="public_key" data-error="wrong" data-success="right">Email Address</label>
+        -->
+        <textarea id="public_key" name="public_key" class="materialize-textarea"></textarea>
+        <label for="public_key" data-error="wrong" data-success="right">Public Key</label>
+      </div>
+    </div>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
+</div>
+
+<div class="row">
+    <form action="{% url 'securemsg:addkey' %}" method="post" class="col s12">
+      {% csrf_token %}
+        <div class="row">
+            <div class="input-field col s12">
+                <input id="example" name="example" type="text" class="validate" required="" aria-required="true">
+                <label for="example" data-error="wrong" data-success="right">Field</label>
+            </div>
+            <div class="input-field col s12">
+                <button class="btn waves-effect waves-light" type="submit" name="action">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 
 <br><br>
 <br><br>
