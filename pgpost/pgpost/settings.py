@@ -123,3 +123,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
     '/var/www/static/',
 ]
+
+EMAIL_BACKEND = "sgbackend.SendGridBackend"
+SENDGRID_API_KEY = "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"
+
