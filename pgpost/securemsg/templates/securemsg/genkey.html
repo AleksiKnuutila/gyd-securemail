@@ -1,0 +1,10 @@
+Here we will generate a <b>key</b>!
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'securemsg:addkey' %}" method="post">
+{% csrf_token %}
+<input type="public_key" name="public_key" value="public key" />
+<input type="text" name="email_address" value="email address" />
+<input type="submit" value="Submit" />
+</form>
