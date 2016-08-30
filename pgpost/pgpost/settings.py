@@ -10,7 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
+import ConfigParser
 import os
+
+CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+config = ConfigParser.RawConfigParser()
+config_file_path = os.path.abspath(os.path.join(CURRENT_DIR, "secret.cfg"))
+print config_file_path
+
+with open(config_file_path) as f:
+    config.readfp(f)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'v343uznd108e--miwg+dgbnelej8j470hkt+g-m)i7pjoc$5l('
+SECRET_KEY = config.get('app', 'secret_key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -120,10 +129,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    os.path.join(BASE_DIR, 'static'),
     '/var/www/static/',
 ]
 
-EMAIL_BACKEND = "sgbackend.SendGridBackend"
-SENDGRID_API_KEY = "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"
+EMAIL_BACKEND = 'sgbackend.SendGridBackend'
+SENDGRID_API_KEY = config.get('sendgrid', 'api_key')
 

@@ -8,6 +8,8 @@ Simple, secure messaging system to be a part of GetYourData.org, replacing e-mai
 
 ## Development
 
+0. Get `secret.cfg` file and copy it to `./pgpost/pgpost` (ignored from
+   git)
 1. Install virtualenv and create a new one using `python 2.7`
 2. In the virtualenv, `pip install django==1.9.8`
 3. ...
