@@ -1,0 +1,25 @@
+{% extends 'securemsg/base.html' %}
+
+{% block body_block %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<div class="row">
+  You will receive a login link by email.
+</div>
+<div class="row">
+  <form action="{% url 'securemsg:index' %}" method="post" class="col s12">
+    <div class="row">
+      {% csrf_token %}
+      <div class="input-field col s6">
+        <input id="email_address" name="email_address" type="text">
+        <label for="email_address" data-error="wrong" data-success="right">Email Address</label>
+      </div>
+  <button class="btn waves-effect waves-light" type="submit" name="action">
+    Login
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
+</div>
+
+{% endblock %}
