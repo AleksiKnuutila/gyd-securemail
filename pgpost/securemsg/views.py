@@ -34,3 +34,8 @@ def addkey(request):
             return HttpResponseRedirect('/securemsg/addkey/')
     else:
         return HttpResponseRedirect('/securemsg/addkey/')
+
+
+def datarequest(request,slug):
+    datareq = DataRequest.objects.get(slug=slug)
+    return HttpResponse(datareq.data_blob)
