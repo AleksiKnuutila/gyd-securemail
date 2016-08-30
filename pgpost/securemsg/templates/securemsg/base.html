@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pretty Good Post</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script type="text/javascript" src="{% static "pgpost/js/jsencrypt.js" %}"></script>
+  <script type="text/javascript" src="{% static "pgpost/js/FileSaver.js" %}"></script>
+  <script type="text/javascript" src="{% static "pgpost/js/crypto.js/components/core.js" %}"></script>
+  <script type="text/javascript" src="{% static "pgpost/js/crypto.js/rollups/aes.js" %}"></script>
+  <script type="text/javascript" src="{% static "pgpost/js/crypto.js/components/enc-base64-min.js" %}"></script>
+</head>
+<body>
+  {% block body_block %}This is body_block's default content.{% endblock %}
+</body>
+</html>
