@@ -34,3 +34,8 @@ def addkey(request):
             return HttpResponseRedirect('/securemsg/addkey/')
     else:
         return HttpResponseRedirect('/securemsg/addkey/')
+
+def encryptfile(request):
+    template = loader.get_template('securemsg/encryptfile.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
