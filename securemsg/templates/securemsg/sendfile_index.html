@@ -106,7 +106,7 @@
 
     function getpublickey() {
       window.email = urlParam('email');
-      $.get( "http://localhost:8000/securemsg/json_get_publickey?email_address="+window.email, function( data ) {
+      $.get( "/json_get_publickey?email_address="+window.email, function( data ) {
         window.glob_pubkey = data;
       });
     }
@@ -128,7 +128,7 @@
         'data_blob': jsonenc,
         'csrfmiddlewaretoken': csrf
       };
-      $.post( "http://localhost:8000/securemsg/json_addencrypted", post_data, function( resp ) {
+      $.post( "/json_addencrypted", post_data, function( resp ) {
       });
 
     $('#part1 .valign').children().css('opacity','0')
