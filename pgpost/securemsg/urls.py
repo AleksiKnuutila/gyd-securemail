@@ -13,8 +13,8 @@ urlpatterns = [
     url(r'^decrypt_index$', views.decrypt_index, name='decrypt_index'),
     url(r'^json_get_publickey', views.json_get_publickey, name='json_get_publickey'),
     url(r'^json_get_datareq', views.json_get_datareq, name='json_get_datareq'),
-    url(r'^json_addkeymaster$', views.addkey, name='addkey'),
-    url(r'^json_confirmemail$', views.json_addencrypted, name='json_addencrypted'),
-    url(r'^json_addkey$', views.addkey, name='addkey'),
+    url(r'^json_addkeymaster$', views.json_addkeymaster, name='json_addkeymaster'),
+    url(r'^json_confirmemail$', views.json_confirmemail, name='json_confirmemail'),
+    url(r'^json_addkey$', views.json_addkey, name='json_addkey'),
     url(r'^login/(?P<confirmation>[-\w]+)/$', views.login, name='login'),
 ]

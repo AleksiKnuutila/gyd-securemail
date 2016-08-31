@@ -33,7 +33,7 @@ Here we will generate a <b>key</b>!
 <br><br>
 
       <div class="input-field col s6">
-        <input id="address" name="confirmation_token" type="text">
+        <input id="confirmation_token" name="confirmation_token" type="text">
         <label for="email_address" data-error="wrong" data-success="right">Confirmation code</label>
       </div>
   <button class="btn waves-effect waves-light" type="submit" id="submit_confirmation_token" name="action">Submit confirmation</button>
@@ -50,7 +50,7 @@ Here we will generate a <b>key</b>!
 
     var send_addkeymaster = function send_addkeymaster() {
       csrf = $('[name="csrfmiddlewaretoken"]').val();
-      email = $('#email').val();
+      email = $('#address').val();
       var post_data = {
         'email': email,
         'csrfmiddlewaretoken': csrf
@@ -60,11 +60,10 @@ Here we will generate a <b>key</b>!
       });
     }
 
-    var send_addkeymaster = function send_addkeymaster() {
+    var send_confirmemail = function send_confirmemail() {
       csrf = $('[name="csrfmiddlewaretoken"]').val();
       confirmation_token = $('#confirmation_token').val();
       var post_data = {
-        'email': window.email;
         'confirmation_token': confirmation_token,
         'csrfmiddlewaretoken': csrf
       };
@@ -77,11 +76,11 @@ Here we will generate a <b>key</b>!
       csrf = $('[name="csrfmiddlewaretoken"]').val();
       confirmation_token = $('#confirmation_token').val();
       var post_data = {
-        'email': window.email;
+        'email': window.email,
         'public_key': window.glob_pubkey,
         'csrfmiddlewaretoken': csrf
       };
-      $.post( "http://localhost:8000/securemsg/json_confirmemail", post_data, function( resp ) {
+      $.post( "http://localhost:8000/securemsg/json_addkey", post_data, function( resp ) {
         alert(resp);
       });
     }
@@ -89,7 +88,7 @@ Here we will generate a <b>key</b>!
     var step1 = function step1() {
       send_addkeymaster();
       // save to global variable
-      window.email = email;
+      window.email = $('#address').val();
       // interface change here
     }
 
