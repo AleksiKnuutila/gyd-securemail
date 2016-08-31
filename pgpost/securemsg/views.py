@@ -57,6 +57,7 @@ def json_get_publickey(request):
     dict = {'email': km.email,'public_key': km.public_key}
     return HttpResponse(json.dumps(dict))
 
+" depracated "
 def encryptfile(request):
     email = request.POST['email_address']
     km = KeyMaster.objects.filter(email=email)
@@ -85,6 +86,7 @@ def json_addencrypted(request):
 def decrypt_index(request):
     #dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
     #context = {'data_blob':dr.data_blob}
+    context = {}
     template = loader.get_template('securemsg/decrypt_index.html')
     return HttpResponse(template.render(context, request))
 

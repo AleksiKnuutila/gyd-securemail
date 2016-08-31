@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'^sendfile_index$', views.sendfile_index, name='sendfile_index'),
     url(r'^decrypt_index$', views.decrypt_index, name='decrypt_index'),
     url(r'^json_get_publickey', views.json_get_publickey, name='json_get_publickey'),
+    url(r'^json_get_datareq', views.json_get_datareq, name='json_get_datareq'),
     url(r'^json_addencrypted', views.json_addencrypted, name='json_addencrypted'),
 ]
