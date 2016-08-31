@@ -12,7 +12,7 @@
 	 	</div>
 
  		<div class="row">
-			<div class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
+			<div id="part1" class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
 				<div class="valign">
 						<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
 						<br>
@@ -115,29 +115,35 @@
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_addencrypted", post_data, function( resp ) {
-        alert(resp);
       });
+
+    $('#part1 .valign').children().css('opacity','0')
+
+    $('#part1 .valign').css({'overflow':'hidden'}).children().animate({'visibility':'hidden', "height":'0'},80,function(){
+            $('#part1 .valign').html('<p  class="feedbackMessage"> Message Sent! </p>')
+    });
+
     }
 
 		// Animate to next part of the 'form / process'
 // is this happening on this screen??
-		function shownext(){
-
-		    $(".part1 input").animate({left: "-=100%"},350);
-		    $(".part1 button").animate({left: "-=100%"},350);
-
-		    $(".part2 input").animate({left: "-=100%"},350);
-		    $(".part2 button").animate({left: "-=100%"},350);
-		    $(".part2 div").animate({left: "-=100%"},350);
-		};
-
-		function confirmationResponse(){
-
-			// Save file or something here...
-
-			// Show message
-			$('.part3').css('display','block');
-		}
+//		function shownext(){
+//
+//		    $(".part1 input").animate({left: "-=100%"},350);
+//		    $(".part1 button").animate({left: "-=100%"},350);
+//
+//		    $(".part2 input").animate({left: "-=100%"},350);
+//		    $(".part2 button").animate({left: "-=100%"},350);
+//		    $(".part2 div").animate({left: "-=100%"},350);
+//		};
+//
+//		function confirmationResponse(){
+//
+//			// Save file or something here...
+//
+//			// Show message
+//			$('.part3').css('display','block');
+//		}
 
     var readfile = function readfile() {
       var file = document.getElementById("fileselect").files[0];
