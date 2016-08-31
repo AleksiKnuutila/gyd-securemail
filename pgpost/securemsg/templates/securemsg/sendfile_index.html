@@ -2,22 +2,36 @@
 
 {% block body_block %}
 
-<link rel="stylesheet" href="/static/pgpost/stylesResponse.css">
+  <link rel="stylesheet" href="/static/pgpost/css/stylesResponse.css">
 
 	<div class="container">
-		<h1> My Data Secure Response  </h1>
-		<p class="explanationText">This is a respnse to the request of <span class="highlightText"> GEORGIA SMITH </span> for her data from <span class="highlightText"> NORDEA GROUP </span>.</p>
 
-		<div class="conts">
-			<div class="partsContainer">
+	  	<div class="row header">
+			<h3 class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> GetYourData.org Secure mail  </h3>
+			<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1"> With this service you can reply to individual's requests for their personal data - securly.</p>
+	 	</div>
 
-					<input type="file" id="myFile" class="green">
-          <button id="encryptbutton" class="green">ATTACH DATA</button>
-					<br>
-					<textarea class="inputtext" placeholder="your message.." id="message"></textarea>
+ 		<div class="row">
+			<div class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
+				<div class="valign">
+						<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
+						<br>
+            <label for="fileselect" class="custom-file-upload">ATTACH FILES</label>
+   					<input type="file" id="fileselect" class="green" style="display:none" onchange="afterClick()">
+            <!--<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>-->
+						</p>
+						<div class="formTextContainer">
+							<input id="contactInfo" type="text"  class="contactInfo" placeholder="contact info">
+						    <textarea id="message" class="balloon " id="message" type="text" placeholder="Response" ></textarea>
+						</div>
+						<button id="sendForm" class="black"> SEND</button>
+					</div>
+				</div>
+			</div>
 
-					<input type="text" class="email inputtext" placeholder="your email" id="from_address"></input>
-					<br><button class="black" onclick="send()"> SEND</button>
+		</div>
+
+	<div>
 
 {% csrf_token %}
 
@@ -93,31 +107,6 @@
     }
     getpublickey();
 
-    var readfile = function readfile() {
-      var file = document.getElementById("myFile").files[0];
-      var fn = file.name;
-      var reader = new FileReader();
-
-      reader.addEventListener("load", function () {
-        var message = $('#message').val();
-        var from_address = $('#from_address').val();
-        var dict = {
-          'filename': fn,
-          'data':reader.result,
-          'message':message,
-          'from_address':from_address
-        };
-        var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
-        window.glob_data_blob = jsonenc;
-        //$('#id_data_blob').val(jsonenc);
-        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
-        //saveAs(blob, "special.file");
-      }, false);
-
-      reader.readAsDataURL(file);
-    }
-    $('#encryptbutton').click(readfile);
-
     var send = function send() {
       csrf = $('[name="csrfmiddlewaretoken"]').val();
       var post_data = {
@@ -150,9 +139,63 @@
 			$('.part3').css('display','block');
 		}
 
+    var readfile = function readfile() {
+      var file = document.getElementById("fileselect").files[0];
+      var fn = file.name;
+      var reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        var message = $('#message').val();
+        var from_address = $('#contactInfo').val();
+        var dict = {
+          'filename': fn,
+          'data':reader.result,
+          'message':message,
+          'from_address':from_address
+        };
+        var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
+        window.glob_data_blob = jsonenc;
+        //$('#id_data_blob').val(jsonenc);
+        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
+        //saveAs(blob, "special.file");
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+
+    var afterClick = function afterClick() {
+      readfile();
+    }
+    //$('#attachDataButton').click(readfile);
+    $('#sendForm').click(send);
+
 	</script>
 
 {% endblock %}
+
+
+
+	<script>
+
+		// Animate to next part of the 'form / process'
+		function attachFile(){
+			console.log('attach')
+
+			// Upload File Fucntionality
+
+
+
+		};
+
+		function send(){
+
+			console.log('send')
+			// Save file or something here...
+
+		}
+
+	</script>
+
 
 </body>
 </html>
