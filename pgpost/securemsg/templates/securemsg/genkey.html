@@ -51,6 +51,8 @@
 
 		 $(document).ready(function(){
 		    $('.scrollspy').scrollSpy();
+        $('#part2').hide();
+        $('#part3').hide();
 		  });
 
 
@@ -64,6 +66,7 @@
 
 			//Change view styles
 			$('#part1').addClass('done');
+      $('#part2').show();
 
 			$('#part1').removeClass('active');
 			$('#part1').removeClass('z-depth-5');
@@ -110,7 +113,7 @@
           console.log("json addkey");
           //Change view styles
     			$('#part2').addClass('done');
-
+          $('#part3').show();
     			$('#part2').removeClass('z-depth-5');
     			$('#part2').removeClass('active');
     			$('#part3').removeClass('inactive');
