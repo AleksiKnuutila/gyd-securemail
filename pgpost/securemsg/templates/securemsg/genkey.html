@@ -29,7 +29,7 @@
 				<span>
 				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
 				</span>
-				<br><button class="green" onclick='checkConfirmationResponse()'> go</button>
+				<br><button id="part2go" class="green" onclick='checkConfirmationResponse()'> go</button>
 				<a id="linktopart3" href="#part3Scroll"></a>
 	      	</div>
 	    </div>
@@ -172,6 +172,8 @@
           generateKeys();
           // send public key
           send_addkey();
+        } else {
+          $("#part2").effect( "shake" );
         }
       });
 
