@@ -14,10 +14,10 @@ import pdb
 def index(request):
     if request.method == 'POST':
         context = {}
-        keymaster = KeyMaster(email = request.POST['email_address'])
-        keymaster.save()
-        send_login_mail(keymaster.email, keymaster.confirmation_token)
-        return JsonResponse({'success':'True'})
+        #keymaster = KeyMaster(email = request.POST['email_address'])
+        #keymaster.save()
+        #send_login_mail(keymaster.email, keymaster.confirmation_token)
+        #return JsonResponse({'success':'True'})
         #return render(request, 'securemsg/index.html', context)
     else:
         context = {}
@@ -106,7 +106,7 @@ def json_addkeymaster(request):
 
 
 def json_addkey(request):
-    keymaster = KeyMaster(email = request.POST['email'])
+    keymaster = KeyMaster.objects.get(email = request.POST['email'])
     keymaster.public_key = request.POST['public_key']
     keymaster.save()
     return HttpResponse(json.dumps({'response': '200 cool beans'}))
