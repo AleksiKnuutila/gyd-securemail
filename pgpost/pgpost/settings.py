@@ -133,6 +133,8 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-EMAIL_BACKEND = 'sgbackend.SendGridBackend'
-SENDGRID_API_KEY = config.get('sendgrid', 'api_key')
+EMAIL_HOST = '127.0.0.1'
+EMAIL_PORT = 1025
 
+#EMAIL_BACKEND = 'sgbackend.SendGridBackend'
+#SENDGRID_API_KEY = config.get('sendgrid', 'api_key')

@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404, JsonResponse
 from django.shortcuts import render
 from django.template import loader
 
@@ -17,7 +17,8 @@ def index(request):
         keymaster = KeyMaster(email = request.POST['email_address'])
         keymaster.save()
         send_login_mail(keymaster.email, keymaster.confirmation_token)
-        return render(request, 'securemsg/index.html', context)
+        return JsonResponse({'success':'True'})
+        #return render(request, 'securemsg/index.html', context)
     else:
         context = {}
         return render(request, 'securemsg/index.html', context)
@@ -32,19 +33,10 @@ def addkey(request):
     context = {}
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = PublicKeyForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-
-            # there must be a more idiomatic way to do this..
-            new_key = PublicKey(public_key = request.POST['public_key'], email_address = request.POST['email_address'])
-            new_key.save()
-            return HttpResponse(template.render(context, request))
-        else:
-            return HttpResponseRedirect('/securemsg/addkey/')
+        keymaster = KeyMaster(email = request.POST['email_address'])
+        keymaster.save()
+        send_login_mail(keymaster.email, keymaster.confirmation_token)
+        return JsonResponse({'success':'True'})
     else:
         return HttpResponseRedirect('/securemsg/addkey/')
 
@@ -96,6 +88,28 @@ def json_get_datareq(request):
     dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
     dict = {'slug':dr.slug,'data_blob':dr.data_blob}
     return HttpResponse(json.dumps(dict))
+
+def json_confirmemail(request):
+    try:
+        keymaster = KeyMaster.objects.get(confirmation_token=request.POST['confirmation_token'])
+        keymaster.confirmed = True
+        keymaster.save()
+        return HttpResponse(json.dumps({'response': '200 cool beans'}))
+    except KeyMaster.DoesNotExist:
+        return HttpResponse(json.dumps({'response': '404 Not found'}))
+
+def json_addkeymaster(request):
+    keymaster = KeyMaster(email = request.POST['email'])
+    keymaster.save()
+    send_login_mail(keymaster.email, keymaster.confirmation_token)
+    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+
+
+def json_addkey(request):
+    keymaster = KeyMaster(email = request.POST['email'])
+    keymaster.public_key = request.POST['public_key']
+    keymaster.save()
+    return HttpResponse(json.dumps({'response': '200 cool beans'}))
 
 def login(request, confirmation):
     try:
