@@ -72,10 +72,14 @@ def addencrypted(request):
 
 " this endpoint is for ajax post requests "
 def json_addencrypted(request):
-    km = KeyMaster.objects.filter(email=request.POST['email'])[0]
-    dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
+    try:
+        keymaster = KeyMaster.objects.get(email = request.POST['email'])
+    except KeyMaster.DoesNotExist:
+        return HttpResponse(json.dumps({'response': '404'}))
+
+    dr = DataRequest(key_master=keymaster,data_blob=request.POST['data_blob'])
     dr.save()
-    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+    return HttpResponse(json.dumps({'response': '200'}))
 
 def decrypt_index(request):
     #dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
@@ -85,7 +89,11 @@ def decrypt_index(request):
     return HttpResponse(template.render(context, request))
 
 def json_get_datareq(request):
-    dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    try:
+        dr = DataRequest.objects.get(slug=request.GET['slug'])
+    except DataRequest.DoesNotExist:
+        return HttpResponse(json.dumps({'response': '404'}))
+
     dict = {'slug':dr.slug,'data_blob':dr.data_blob}
     return HttpResponse(json.dumps(dict))
 
@@ -94,19 +102,29 @@ def json_confirmemail(request):
         keymaster = KeyMaster.objects.get(confirmation_token=request.POST['confirmation_token'])
         keymaster.confirmed = True
         keymaster.save()
-        return HttpResponse(json.dumps({'response': '200 cool beans'}))
+        return HttpResponse(json.dumps({'response': '200'}))
     except KeyMaster.DoesNotExist:
-        return HttpResponse(json.dumps({'response': '404 Not found'}))
+        return HttpResponse(json.dumps({'response': '404'}))
 
 def json_addkeymaster(request):
-    keymaster = KeyMaster(email = request.POST['email'])
-    keymaster.save()
+    try:
+        keymaster = KeyMaster.objects.get(email = request.POST['email'])
+    # not found, should create new one
+    except KeyMaster.DoesNotExist:
+        keymaster = KeyMaster(email = request.POST['email'])
+        keymaster.save()
+
     send_login_mail(keymaster.email, keymaster.confirmation_token)
-    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+    return HttpResponse(json.dumps({'response': '200'}))
 
 
 def json_addkey(request):
-    keymaster = KeyMaster.objects.get(email = request.POST['email'])
+    try:
+        keymaster = KeyMaster.objects.get(email = request.POST['email'])
+
+    except KeyMaster.DoesNotExist:
+        return HttpResponse(json.dumps({'response': '404'}))
+
     keymaster.public_key = request.POST['public_key']
     keymaster.save()
     return HttpResponse(json.dumps({'response': '200 cool beans'}))

@@ -1,20 +1,21 @@
 from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
 
 
 def send_login_mail(email, token):
-    login_link = "http://localhost:8000/securemsg/login/%s" % token
-    html_body = """
-        <a href="%s">%s</a>
-    """ % (login_link, login_link)
+
+    context = {'token': token}
+    msg_plain = render_to_string('../templates/email/login.txt', context)
+    msg_html = render_to_string('../templates/email/login.html', context)
 
     mail = EmailMultiAlternatives(
-      subject="Your one-off login link to pgpost",
-      body=login_link,
-      from_email="PGPost <aleksi.knuutila@iki.fi>",
+      subject="GetYourData.org Secure Mail confirmation token",
+      body=msg_plain,
+      from_email="GetYourData.org <robot@getyourdata.org>",
       to=[email],
       headers={"Reply-To": "noreply@datam.me"}
     )
-    mail.attach_alternative(html_body, "text/html")
+    mail.attach_alternative(msg_html, "text/html")
 
     mail.send()
