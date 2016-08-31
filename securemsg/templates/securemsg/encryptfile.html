@@ -4,7 +4,7 @@
 
   Encrypt file!!
 
-<form action="/securemsg/addencrypted" method="post">
+<form action="/addencrypted" method="post">
     {% csrf_token %}
     <input type="text" name="email" id="email" value="{{ email }}">
     <label for="id_data_blob" class="">Data blob:</label>
