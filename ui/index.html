@@ -5,57 +5,125 @@
 	<title>MY DATA</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="styles.css">
- 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+	  <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  	  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+	 
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"> </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+
 </head>
 <body>
 
-	<div class="container">
-		<h1> My Data Secure Request  </h1>
-		<p class="explanationText">Enter your email to receive a confirmation code.</p>
 
-		<div class="conts">
-			<div class="partsContainer">
-				<div class="part1">
-					<input type="text" class="email inputtext" placeholder="your email"></input>
-					<br><button class="green" onclick="shownext()"> get confirmation code</button>
-				</div>
+  <div class="container">
+  	<div class="row header">
+		<h3 class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> GetYourData.org Secure mail  </h3>
+		<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Simple, secure way to receive your personal data from private entities. The last step of GetYourData.org process: replacing e-mail.</p>
+ 	</div>
+ 
+ 	<div class="row">	    
+      	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2 ">
+		  	<div class="valign">
+			  <p  id="part1Scroll"  class="feedbackMessage scrollspy"> 1. Start by confirming your email adress </p>
+			  <span>
+			    <input class="balloon " id="email" type="text" placeholder="myname@example.com" /><label for="email">Email</label>
+			  </span>
+				<br><button class="green" onclick="sendConfirmationEmail()"> get confirmation code</button>
+				<a id="linktopart2" href="#part2Scroll"></a>
+    	  	</div>
+     	</div>
+    
+     	<div id="part2" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2">
+			<div class="valign">
+		      	<p id="part2Scroll" class="scrollspy feedbackMessage"> 2. Now paste the confirmation code you recieved in your email. </p>
+				<span>
+				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
+				</span>
+				<br><button class="green" onclick='checkConfirmationResponse()'> go</button>
+				<a id="linktopart3" href="#part3Scroll"></a>
+	      	</div>
+	    </div>
 
-				<div class="part2">
-					<input type="text" class="confirmation inputtext" placeholder="paste confirmation"></input>
-					<br><button class="green" onclick='confirmationResponse()' > save</button>
-				</div>
-
-				<div class="part3">
-					<p> Your secret file XXXXXXX has been saved.</p>
-					<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
-				</div>
-
+      	<div id="part3" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l6 offset-l3">
+			<div class="valign">
+				<p id="part3Scroll" class="scrollspy feedbackMessage"> Your secret file XXXXXXX has been saved.</p>
+				<button id="fileSave" onclick="saveFile()"> Get Your file </button>
+				<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
 			</div>
-		</div>
+      	</div>
 
-	<div>
+	</div>
+
+</div>
 
 
 	<script>
+		
+		 $(document).ready(function(){
+		    $('.scrollspy').scrollSpy();
+		  });
+				
 
 		// Animate to next part of the 'form / process'
-		function shownext(){
+		function sendConfirmationEmail(){
 
-		    $(".part1 input").animate({left: "-=100%"},350);
-		    $(".part1 button").animate({left: "-=100%"},350);
+			console.log('CALLED: sendConfirmationEmail')
 
-		    $(".part2 input").animate({left: "-=100%"},350);
-		    $(".part2 button").animate({left: "-=100%"},350);
+			// If have time put animated working-on-it gif
+
+
+			//Change view styles
+			$('#part1').addClass('done');
+
+			$('#part1').removeClass('active');
+			$('#part1').removeClass('z-depth-5');
+			$('#part2').removeClass('inactive');
+			$('#part2').addClass('z-depth-5');
+			$('#part2').addClass('active');
+
+			//Rest of code
+
+
+			//All set to continue:
+			$('#linktopart2').click();
+
+
 		};
 
-		function confirmationResponse(){
+		function checkConfirmationResponse(){
 
-			// Save file or something here...
+			console.log('CALLED: checkConfirmationResponse')
 
-			// Show message
-			$('.part3').css('display','block');
+			//Change view styles
+			$('#part2').addClass('done');
+
+			$('#part2').removeClass('z-depth-5');
+			$('#part2').removeClass('active');
+			$('#part3').removeClass('inactive');
+
+			$('#part3').addClass('z-depth-5');
+			$('#part3').addClass('active');
+	
+			//Rest of code
+
+
+			//All set to continue:
+			$('#linktopart3').click();
+
+		}
+
+
+		function saveFile(){
+
+			//Save file functionality
 		}
 
 	</script>
