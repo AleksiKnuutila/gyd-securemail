@@ -30,34 +30,38 @@
 	 	</div>
  
  		<div class="row">
-			<div class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
+			<div id="part1" class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
 				<div class="valign">		
-						<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
-						<br> 
-						<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>
-						</p>
-						<div class="formTextContainer">
-							<input id="contactInfo" type="text"  class="contactInfo" placeholder="contact info">
-						    <textarea id="message" class="balloon " id="message" type="text" placeholder="Response" ></textarea>
-						</div>
-						<button id="sendForm" class="black" onclick="send()"> SEND</button>
+					<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
+					<br> 
+					<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>
+					</p>
+					
+					<div class="formTextContainer">
+						<input id="contactInfo" type="text"  class="contactInfo" placeholder="contact info">
+					    <textarea class="balloon " id="message" type="text" placeholder="Response" ></textarea>
 					</div>
+					<button id="sendForm" class="black" onclick="send()"> SEND</button>
 				</div>
 			</div>
-		
+
 		</div>
+		
+	</div>
 	
-	<div>
 
 
 	<script>
 
+		 $(document).ready(function(){
+		    $('.scrollspy').scrollSpy();
+		  });
+				
 		// Animate to next part of the 'form / process'
 		function attachFile(){
 			console.log('attach')
 	
 			// Upload File Fucntionality
-
 
 		
 		};
@@ -65,7 +69,17 @@
 		function send(){
 
 			console.log('send')
-			// Save file or something here...
+
+			//Functions here
+
+			// After all is sent do this : 
+			$('#part2').css('display','block')
+			
+			$('#part1 .valign').children().css('opacity','0')
+			
+			$('#part1 .valign').css({'overflow':'hidden'}).children().animate({'visibility':'hidden', "height":'0'},80,function(){
+				$('#part1 .valign').html('<p  class="feedbackMessage"> Message Sent! </p>')
+			})	;	
 
 		}
 
