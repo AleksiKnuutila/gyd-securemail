@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^encryptfile$', views.encryptfile, name='encryptfile'),
     url(r'^addencrypted$', views.addencrypted, name='addencrypted'),
     url(r'^sendfile_index$', views.sendfile_index, name='sendfile_index'),
+    url(r'^login/(?P<confirmation>[-\w]+)/$', views.login, name='login'),
 ]

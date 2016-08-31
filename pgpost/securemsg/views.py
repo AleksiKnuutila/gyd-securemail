@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import loader
 
@@ -12,7 +12,9 @@ import pdb
 def index(request):
     if request.method == 'POST':
         context = {}
-        send_login_mail(request.POST['email_address'], "foo")
+        keymaster = KeyMaster(email = request.POST['email_address'])
+        keymaster.save()
+        send_login_mail(keymaster.email, keymaster.confirmation_token)
         return render(request, 'securemsg/index.html', context)
     else:
         context = {}
@@ -65,3 +67,14 @@ def addencrypted(request):
     dr.save()
     template = loader.get_template('securemsg/addkey.html')
     context = {}
+
+def login(request, confirmation):
+    try:
+        keymaster = KeyMaster.objects.get(confirmation_token=confirmation)
+        keymaster.confirmed = True
+        keymaster.save()
+
+    except KeyMaster.DoesNotExist:
+        raise Http404("Not found")
+
+    return HttpResponseRedirect('/securemsg/addkey.html')
