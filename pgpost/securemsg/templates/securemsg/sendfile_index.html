@@ -14,9 +14,9 @@
 					<input type="file" id="myFile" class="green">
           <button id="encryptbutton" class="green">ATTACH DATA</button>
 					<br>
-					<textarea class="inputtext" placeholder="your message.."></textarea>
+					<textarea class="inputtext" placeholder="your message.." id="message"></textarea>
 
-					<input type="text" class="email inputtext" placeholder="your email"></input>
+					<input type="text" class="email inputtext" placeholder="your email" id="from_address"></input>
 					<br><button class="black" onclick="send()"> SEND</button>
 
 {% csrf_token %}
@@ -30,39 +30,6 @@
 			<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
 
 		</div> -->
-
-
-<!--
-
-	<div class="container">
-		<h1> My Data Secure Request  </h1>
-		<p class="explanationText">Enter your email to receive a confirmation code.</p>
-
-		<div class="conts">
-			<div class="partsContainer">
-
-        <div class="part1">
-          <div class="conts">
-            <div class="partsContainer">
-            <p class="explanationText">This is a respnse to the request of <span class="highlightText"> GEORGIA SMITH </span> for her data from <span class="highlightText"> NORDEA GROUP </span>.</p>
-
-              <button class="green" onclick="attachFile()"> ATTACH DATA</button>
-              <br>
-              <textarea id="message" class="inputtext" placeholder="your message.."></textarea>
-
-              <input type="text" class="email inputtext" placeholder="your email"></input>
-              <br><button class="black" onclick="send()"> SEND</button>
-
-          </div>
-        </div>
-				<div class="part1">
-					<input id="email" type="text" class="email inputtext" placeholder="your email"></input>
-					<br><button class="green" onclick="step2()"> get confirmation code</button>
-				</div>
-			</div>
-		</div>
-
--->
 
 	<script>
 
@@ -128,10 +95,19 @@
 
     var readfile = function readfile() {
       var file = document.getElementById("myFile").files[0];
+      var fn = file.name;
       var reader = new FileReader();
 
       reader.addEventListener("load", function () {
-        var jsonenc = JSON.stringify(encrypt(reader.result));
+        var message = $('#message').val();
+        var from_address = $('#from_address').val();
+        var dict = {
+          'filename': fn,
+          'data':reader.result,
+          'message':message,
+          'from_address:from_address
+        };
+        var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
         window.glob_data_blob = jsonenc;
         //$('#id_data_blob').val(jsonenc);
         //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
@@ -155,6 +131,7 @@
     }
 
 		// Animate to next part of the 'form / process'
+// is this happening on this screen??
 		function shownext(){
 
 		    $(".part1 input").animate({left: "-=100%"},350);
@@ -176,30 +153,6 @@
 	</script>
 
 {% endblock %}
-
-
-	<script>
-
-		// Animate to next part of the 'form / process'
-		function shownext(){
-
-		    $(".part1 input").animate({left: "-=100%"},350);
-		    $(".part1 button").animate({left: "-=100%"},350);
-
-		    $(".part2 input").animate({left: "-=100%"},350);
-		    $(".part2 button").animate({left: "-=100%"},350);
-		};
-
-		function confirmationResponse(){
-
-			// Save file or something here...
-
-			// Show message
-			$('.part3').css('display','block');
-		}
-
-	</script>
-
 
 </body>
 </html>
