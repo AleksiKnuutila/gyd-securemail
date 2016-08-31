@@ -5,7 +5,7 @@ from django.template import loader
 from .forms import PublicKeyForm
 from .forms import DataRequestForm
 from .models import PublicKey, KeyMaster, DataRequest
-from .libs.mail import send_login_mail
+from .libs.mail import send_login_mail, send_data_received_mail
 
 import json
 
@@ -79,6 +79,10 @@ def json_addencrypted(request):
 
     dr = DataRequest(key_master=keymaster,data_blob=request.POST['data_blob'])
     dr.save()
+
+    # Send email notification to requester
+    send_data_received_mail(keymaster.email, dr.slug)
+
     return HttpResponse(json.dumps({'response': '200'}))
 
 def decrypt_index(request):

@@ -1,0 +1,8 @@
+Hello there,
+your data request has been responded!
+
+The following link will take you to GetYourData.org Secure Mail.
+
+{{link}}
+
+You can decrypt the data with the private key you saved before.
