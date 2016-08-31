@@ -5,56 +5,68 @@
 	<title>MY DATA</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="stylesResponse.css">
- 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+	  <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  	  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+	 
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"> </script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="stylesResponse.css">
+
 </head>
 <body>
 
 	<div class="container">
-		<h1> My Data Secure Response  </h1>
-		<p class="explanationText">This is a respnse to the request of <span class="highlightText"> GEORGIA SMITH </span> for her data from <span class="highlightText"> NORDEA GROUP </span>.</p>
 
-		<div class="conts">
-			<div class="partsContainer">
-					
-					<button class="green" onclick="attachFile()"> ATTACH DATA</button>
-					<br>
-					<textarea class="inputtext" placeholder="your message.."></textarea>
-
-					<input type="text" class="email inputtext" placeholder="your email"></input>
-					<br><button class="black" onclick="send()"> SEND</button>
-
+	  	<div class="row header">
+			<h3 class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> GetYourData.org Secure mail  </h3>
+			<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1"> With this service you can reply to individual's requests for their personal data - securly.</p>
+	 	</div>
+ 
+ 		<div class="row">
+			<div class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
+				<div class="valign">		
+						<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
+						<br> 
+						<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>
+						</p>
+						<div class="formTextContainer">
+							<input id="contactInfo" type="text"  class="contactInfo" placeholder="contact info">
+						    <textarea id="message" class="balloon " id="message" type="text" placeholder="Response" ></textarea>
+						</div>
+						<button id="sendForm" class="black" onclick="send()"> SEND</button>
+					</div>
 				</div>
 			</div>
+		
 		</div>
-
-		<!-- <div class="part3">
-			<p> Your secret file XXXXXXX has been saved.</p>
-			<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
-
-		</div> -->
+	
 	<div>
 
 
 	<script>
 
 		// Animate to next part of the 'form / process'
-		function shownext(){
+		function attachFile(){
+			console.log('attach')
+	
+			// Upload File Fucntionality
 
-		    $(".part1 input").animate({left: "-=100%"},350);
-		    $(".part1 button").animate({left: "-=100%"},350);
 
-		    $(".part2 input").animate({left: "-=100%"},350);
-		    $(".part2 button").animate({left: "-=100%"},350);
+		
 		};
 
-		function confirmationResponse(){
+		function send(){
 
+			console.log('send')
 			// Save file or something here...
 
-			// Show message
-			$('.part3').css('display','block');
 		}
 
 	</script>
