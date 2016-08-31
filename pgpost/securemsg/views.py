@@ -75,8 +75,20 @@ def addencrypted(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+" this endpoint is for ajax post requests "
+def json_addencrypted(request):
+    km = KeyMaster.objects.filter(email=request.POST['email'])[0]
+    dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
+    dr.save()
+    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+
 def decrypt_index(request):
-    dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
-    context = {'data_blob':dr.data_blob}
+    #dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    #context = {'data_blob':dr.data_blob}
     template = loader.get_template('securemsg/decrypt_index.html')
     return HttpResponse(template.render(context, request))
+
+def json_get_datareq(request):
+    dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    dict = {'slug':dr.slug,'data_blob':dr.data_blob}
+    return HttpResponse(json.dumps(dict))
