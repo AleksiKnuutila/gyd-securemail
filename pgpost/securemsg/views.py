@@ -52,6 +52,7 @@ def sendfile_index(request):
 def encryptfile(request):
     email = request.POST['email_address']
     km = KeyMaster.objects.filter(email=email)
+    pdb.set_trace()
     public_key = km[0].public_key
     template = loader.get_template('securemsg/encryptfile.html')
     form = DataRequestForm()
@@ -59,9 +60,15 @@ def encryptfile(request):
     return HttpResponse(template.render(context, request))
 
 def addencrypted(request):
-    pdb.set_trace()
     km = KeyMaster.objects.filter(email=request.POST['email'])[0]
     dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
     dr.save()
-    template = loader.get_template('securemsg/addkey.html')
+    template = loader.get_template('securemsg/addencrypted.html')
     context = {}
+    return HttpResponse(template.render(context, request))
+
+def decrypt_index(request):
+    dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    context = {'data_blob':dr.data_blob}
+    template = loader.get_template('securemsg/decrypt_index.html')
+    return HttpResponse(template.render(context, request))

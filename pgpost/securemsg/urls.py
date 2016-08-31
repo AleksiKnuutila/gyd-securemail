@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^encryptfile$', views.encryptfile, name='encryptfile'),
     url(r'^addencrypted$', views.addencrypted, name='addencrypted'),
     url(r'^sendfile_index$', views.sendfile_index, name='sendfile_index'),
+    url(r'^decrypt_index$', views.decrypt_index, name='decrypt_index'),
 ]
