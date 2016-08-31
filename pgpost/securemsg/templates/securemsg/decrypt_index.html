@@ -10,6 +10,7 @@ Choose private key:
         <input id="myFile" type="file"/>
         <input type="button" value="readprivkey" id="readprivkey" />
         <input type="button" value="decrypt" id="decrypt" />
+        <input type="button" value="download" id="download" />
 
 <textarea id="privkey" name="privkey"></textarea>
 
@@ -73,10 +74,13 @@ function dataURItoBlob(dataURI) {
         var jsondec = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
         var datadict = JSON.parse(jsondec);
         var b64content = datadict['data'];
-        var fn = datadict['filename'];
-        var blob = dataURItoBlob(b64content);
+        window.blob = dataURItoBlob(b64content);
+        window.fn = datadict['filename'];
         //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, fn);
+    }
+
+    var download = function download() {
+        saveAs(window.blob, window.fn);
     }
 
     //Change the key size value for new keys
@@ -105,6 +109,7 @@ function dataURItoBlob(dataURI) {
     // If they wish to generate new keys.
 //    $('#dldecrypt').click(dlEncryptedData);
     $('#decrypt').click(decrypt);
+    $('#download').click(download);
     $('#readprivkey').click(readprivkey);
     //generateKeys();
 

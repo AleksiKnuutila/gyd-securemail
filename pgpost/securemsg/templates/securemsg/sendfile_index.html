@@ -14,9 +14,9 @@
 					<input type="file" id="myFile" class="green">
           <button id="encryptbutton" class="green">ATTACH DATA</button>
 					<br>
-					<textarea class="inputtext" placeholder="your message.."></textarea>
+					<textarea class="inputtext" placeholder="your message.." id="message"></textarea>
 
-					<input type="text" class="email inputtext" placeholder="your email"></input>
+					<input type="text" class="email inputtext" placeholder="your email" id="from_address"></input>
 					<br><button class="black" onclick="send()"> SEND</button>
 
 {% csrf_token %}
@@ -99,7 +99,14 @@
       var reader = new FileReader();
 
       reader.addEventListener("load", function () {
-        var dict = { 'filename': fn, 'data':reader.result };
+        var message = $('#message').val();
+        var from_address = $('#from_address').val();
+        var dict = {
+          'filename': fn,
+          'data':reader.result,
+          'message':message,
+          'from_address:from_address
+        };
         var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
         window.glob_data_blob = jsonenc;
         //$('#id_data_blob').val(jsonenc);
