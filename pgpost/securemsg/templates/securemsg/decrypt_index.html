@@ -15,6 +15,14 @@ Here we will decrypt stuff!
 <script type="text/javascript">
   $(function () {
 
+    function get_datareq() {
+      window.slug = $.urlParam('slug');
+      $.get( "http://localhost:8000/securemsg/json_get_datareq?slug="+window.slug, function( data ) {
+        window.glob_datareq = data;
+      });
+    }
+    get_datareq();
+
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string
   // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
