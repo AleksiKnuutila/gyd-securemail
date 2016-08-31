@@ -29,16 +29,16 @@
 				<span>
 				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
 				</span>
-				<br><button class="green" onclick='checkConfirmationResponse()'> go</button>
+				<br><button id="part2go" class="green" onclick='checkConfirmationResponse()'> go</button>
 				<a id="linktopart3" href="#part3Scroll"></a>
 	      	</div>
 	    </div>
 
       	<div id="part3" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l6 offset-l3">
 			<div class="valign">
-				<p id="part3Scroll" class="scrollspy feedbackMessage"> Your secret file XXXXXXX has been saved.</p>
-				<button id="fileSave" onclick="saveFile()"> Get Your file </button>
-				<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
+				<p id="part3Scroll" class="scrollspy feedbackMessage"> Your private key has been generated and public key has been saved.</p>
+				<button id="fileSave" onclick="saveFile()"> Get private key </button>
+				<p> Keep it somewhere where you can remember. You ll need it to open the response.</p>
 			</div>
       	</div>
 
@@ -51,6 +51,8 @@
 
 		 $(document).ready(function(){
 		    $('.scrollspy').scrollSpy();
+        $('#part2').hide();
+        $('#part3').hide();
 		  });
 
 
@@ -64,6 +66,7 @@
 
 			//Change view styles
 			$('#part1').addClass('done');
+      $('#part2').show();
 
 			$('#part1').removeClass('active');
 			$('#part1').removeClass('z-depth-5');
@@ -79,6 +82,7 @@
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_addkeymaster", post_data, function( resp ) {
+        rj = JSON.parse(resp);
         console.log("json addkeymaster");
       });
 
@@ -93,17 +97,8 @@
 
 			console.log('CALLED: checkConfirmationResponse')
 
-			//Change view styles
-			$('#part2').addClass('done');
-
-			$('#part2').removeClass('z-depth-5');
-			$('#part2').removeClass('active');
-			$('#part3').removeClass('inactive');
-
-			$('#part3').addClass('z-depth-5');
-			$('#part3').addClass('active');
-
 			//Rest of code
+      // transition is only done after we receive OK for adding the key
 
       var send_addkey = function send_addkey() {
         csrf = $('[name="csrfmiddlewaretoken"]').val();
@@ -114,7 +109,20 @@
           'csrfmiddlewaretoken': csrf
         };
         $.post( "http://localhost:8000/securemsg/json_addkey", post_data, function( resp ) {
+          //All set to continue:
           console.log("json addkey");
+          //Change view styles
+    			$('#part2').addClass('done');
+          $('#part3').show();
+    			$('#part2').removeClass('z-depth-5');
+    			$('#part2').removeClass('active');
+    			$('#part3').removeClass('inactive');
+
+    			$('#part3').addClass('z-depth-5');
+    			$('#part3').addClass('active');
+
+    			$('#linktopart3').click();
+
         });
       }
 
@@ -158,13 +166,17 @@
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_confirmemail", post_data, function( resp ) {
-        generateKeys();
-        // send public key
-        send_addkey();
-      });
+        rj = JSON.parse(resp);
 
-			//All set to continue:
-			$('#linktopart3').click();
+        if (rj.response == "200") {
+          generateKeys();
+          // send public key
+          send_addkey();
+        } else {
+          $("#part2").effect( "shake" );
+          $('#confirmation').val("");
+        }
+      });
 
 		}
 
