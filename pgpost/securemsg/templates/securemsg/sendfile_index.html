@@ -2,11 +2,213 @@
 
 {% block body_block %}
 
-<form action="/securemsg/encryptfile" method="post">
-    {% csrf_token %}
-    email address:
-    <input type="text" id="email_address" name="email_address" />
-    <input type="submit" value="Submit" />
-</form>
+<link rel="stylesheet" href="/static/pgpost/stylesResponse.css">
+
+	<div class="container">
+		<h1> My Data Secure Response  </h1>
+		<p class="explanationText">This is a respnse to the request of <span class="highlightText"> GEORGIA SMITH </span> for her data from <span class="highlightText"> NORDEA GROUP </span>.</p>
+
+		<div class="conts">
+			<div class="partsContainer">
+
+					<input type="file" id="myFile" class="green">
+          <button id="encryptbutton" class="green">ATTACH DATA</button>
+					<br>
+					<textarea class="inputtext" placeholder="your message.."></textarea>
+
+					<input type="text" class="email inputtext" placeholder="your email"></input>
+					<br><button class="black" onclick="send()"> SEND</button>
+
+{% csrf_token %}
+
+				</div>
+			</div>
+		</div>
+
+		<!-- <div class="part3">
+			<p> Your secret file XXXXXXX has been saved.</p>
+			<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
+
+		</div> -->
+
+
+<!--
+
+	<div class="container">
+		<h1> My Data Secure Request  </h1>
+		<p class="explanationText">Enter your email to receive a confirmation code.</p>
+
+		<div class="conts">
+			<div class="partsContainer">
+
+        <div class="part1">
+          <div class="conts">
+            <div class="partsContainer">
+            <p class="explanationText">This is a respnse to the request of <span class="highlightText"> GEORGIA SMITH </span> for her data from <span class="highlightText"> NORDEA GROUP </span>.</p>
+
+              <button class="green" onclick="attachFile()"> ATTACH DATA</button>
+              <br>
+              <textarea id="message" class="inputtext" placeholder="your message.."></textarea>
+
+              <input type="text" class="email inputtext" placeholder="your email"></input>
+              <br><button class="black" onclick="send()"> SEND</button>
+
+          </div>
+        </div>
+				<div class="part1">
+					<input id="email" type="text" class="email inputtext" placeholder="your email"></input>
+					<br><button class="green" onclick="step2()"> get confirmation code</button>
+				</div>
+			</div>
+		</div>
+
+-->
+
+	<script>
+
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+
+    // define the characters to pick from
+    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
+    var genRandomString = function genRandomString(keyLength){
+      var randomstring = '';
+
+      for (var i=0; i < keyLength; i++) {
+        var rnum = Math.floor(Math.random() * chars.length);
+        randomstring += chars.substring(rnum,rnum+1);
+      }
+      return randomstring;
+    };
+
+    // encrypt a javascript object into a payload to be sent
+    // to a server or stored on the client
+    var encrypt = function encrypt(data) {
+
+      var publicKey = $('#public_key').val();
+      // Create a new encryption key (with a specified length)
+      var key = genRandomString(50);
+      // convert data to a json string
+      //var dataAsString = JSON.stringify(data);
+      var dataAsString = data;
+      // encrypt the data symmetrically
+      // (the cryptojs library will generate its own 256bit key!!)
+      var aesEncrypted = CryptoJS.AES.encrypt(dataAsString, key);
+      // get the symmetric key and initialization vector from
+      // (hex encoded) and concatenate them into one string
+      var aesKey = JSON.stringify({
+//        key : String(aesEncrypted.key),
+        key : String(key),
+        iv : String(aesEncrypted.iv)
+      });
+      // the data is base64 encoded
+      var encryptedMessage = aesEncrypted.toString();
+
+      // we create a new JSEncrypt object for rsa encryption
+      var rsaEncrypt = new JSEncrypt();
+
+      // we set the public key (which we passed into the function)
+      rsaEncrypt.setPublicKey(publicKey);
+      // now we encrypt the key & iv with our public key
+      var encryptedKey = rsaEncrypt.encrypt(aesKey);
+      // and concatenate our payload message
+      var payload = {
+        encryptedKey: encryptedKey,
+        encryptedMessage: encryptedMessage
+      };
+
+      return payload;
+    };
+
+    function getpublickey() {
+      window.email = $.urlParam('email');
+      $.get( "http://localhost:8000/securemsg/json_get_publickey?email_address="+window.email, function( data ) {
+        window.glob_pubkey = data;
+      });
+    }
+    getpublickey();
+
+    var readfile = function readfile() {
+      var file = document.getElementById("myFile").files[0];
+      var reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        var jsonenc = JSON.stringify(encrypt(reader.result));
+        window.glob_data_blob = jsonenc;
+        //$('#id_data_blob').val(jsonenc);
+        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
+        //saveAs(blob, "special.file");
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+    $('#encryptbutton').click(readfile);
+
+    var send = function send() {
+      csrf = $('[name="csrfmiddlewaretoken"]').val();
+      var post_data = {
+        'email': window.email,
+        'data_blob': window.glob_data_blob,
+        'csrfmiddlewaretoken': csrf
+      };
+      $.post( "http://localhost:8000/securemsg/json_addencrypted", post_data, function( resp ) {
+        alert(resp);
+      });
+    }
+
+		// Animate to next part of the 'form / process'
+		function shownext(){
+
+		    $(".part1 input").animate({left: "-=100%"},350);
+		    $(".part1 button").animate({left: "-=100%"},350);
+
+		    $(".part2 input").animate({left: "-=100%"},350);
+		    $(".part2 button").animate({left: "-=100%"},350);
+		    $(".part2 div").animate({left: "-=100%"},350);
+		};
+
+		function confirmationResponse(){
+
+			// Save file or something here...
+
+			// Show message
+			$('.part3').css('display','block');
+		}
+
+	</script>
 
 {% endblock %}
+
+
+	<script>
+
+		// Animate to next part of the 'form / process'
+		function shownext(){
+
+		    $(".part1 input").animate({left: "-=100%"},350);
+		    $(".part1 button").animate({left: "-=100%"},350);
+
+		    $(".part2 input").animate({left: "-=100%"},350);
+		    $(".part2 button").animate({left: "-=100%"},350);
+		};
+
+		function confirmationResponse(){
+
+			// Save file or something here...
+
+			// Show message
+			$('.part3').css('display','block');
+		}
+
+	</script>
+
+
+</body>
+</html>

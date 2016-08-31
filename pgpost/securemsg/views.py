@@ -7,6 +7,8 @@ from .forms import DataRequestForm
 from .models import PublicKey, KeyMaster, DataRequest
 from .libs.mail import send_login_mail
 
+import json
+
 import pdb
 
 def index(request):
@@ -51,9 +53,17 @@ def sendfile_index(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+def json_get_publickey(request):
+    email = request.GET['email_address']
+    km = KeyMaster.objects.filter(email=email)[0]
+    dict = {'email': km.email,'public_key': km.public_key}
+    return HttpResponse(json.dumps(dict))
+
+" depracated "
 def encryptfile(request):
     email = request.POST['email_address']
     km = KeyMaster.objects.filter(email=email)
+    pdb.set_trace()
     public_key = km[0].public_key
     template = loader.get_template('securemsg/encryptfile.html')
     form = DataRequestForm()
@@ -61,12 +71,31 @@ def encryptfile(request):
     return HttpResponse(template.render(context, request))
 
 def addencrypted(request):
-    pdb.set_trace()
     km = KeyMaster.objects.filter(email=request.POST['email'])[0]
     dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
     dr.save()
-    template = loader.get_template('securemsg/addkey.html')
+    template = loader.get_template('securemsg/addencrypted.html')
     context = {}
+    return HttpResponse(template.render(context, request))
+
+" this endpoint is for ajax post requests "
+def json_addencrypted(request):
+    km = KeyMaster.objects.filter(email=request.POST['email'])[0]
+    dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
+    dr.save()
+    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+
+def decrypt_index(request):
+    #dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    #context = {'data_blob':dr.data_blob}
+    context = {}
+    template = loader.get_template('securemsg/decrypt_index.html')
+    return HttpResponse(template.render(context, request))
+
+def json_get_datareq(request):
+    dr = DataRequest.objects.filter(slug=request.GET['slug'])[0]
+    dict = {'slug':dr.slug,'data_blob':dr.data_blob}
+    return HttpResponse(json.dumps(dict))
 
 def login(request, confirmation):
     try:
