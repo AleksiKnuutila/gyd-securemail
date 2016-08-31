@@ -92,7 +92,8 @@ $.urlParam = function(name){
     // to a server or stored on the client
     var encrypt = function encrypt(data) {
 
-      var publicKey = $('#public_key').val();
+      keyobj = JSON.parse(window.glob_pubkey);
+      var publicKey = keyobj['public_key'];
       // Create a new encryption key (with a specified length)
       var key = genRandomString(50);
       // convert data to a json string

@@ -4,8 +4,9 @@
 
 Here we will decrypt stuff!
 
-<textarea id="data_blob" name="data_blob">{{ data_blob }}</textarea>
+<br><br>
 
+Choose private key:
         <input id="myFile" type="file"/>
         <input type="button" value="readprivkey" id="readprivkey" />
         <input type="button" value="decrypt" id="decrypt" />
@@ -61,7 +62,6 @@ function dataURItoBlob(dataURI) {
       reader.readAsText(file);
     }
 
-
     var decrypt = function decrypt(encryptedKey, encryptedData) {
 //      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
 //        var rsaDecrypt = new JSEncrypt();
@@ -76,7 +76,9 @@ function dataURItoBlob(dataURI) {
         var rsaDecrypt = new JSEncrypt();
         var privateKey = $('#privkey').val();
         rsaDecrypt.setPrivateKey(privateKey);
-        data = JSON.parse($('#data_blob').val());
+        //data = JSON.parse($('#data_blob').val());
+        datareq = JSON.parse(window.glob_datareq);
+        data = JSON.parse(datareq['data_blob']);
         var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
         var b64content = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
         var blob = dataURItoBlob(b64content);
@@ -134,20 +136,6 @@ function dataURItoBlob(dataURI) {
       saveAs(blob, "privatekey.rsa");
     }
 
-    var formfile = '';
-    var readfile = function readfile() {
-      var file = document.getElementById("myFile").files[0];
-      var reader = new FileReader();
-
-      reader.addEventListener("load", function () {
-        var jsonenc = JSON.stringify(encrypt(reader.result));
-        $('#id_data_blob').val(jsonenc);
-        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
-        //saveAs(blob, "special.file");
-      }, false);
-
-      reader.readAsDataURL(file);
-    }
 
 //    var dlEncryptedData = function dlEncryptedData() {
 //      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
@@ -162,7 +150,6 @@ function dataURItoBlob(dataURI) {
     // If they wish to generate new keys.
     $('#generate').click(generateKeys);
     $('#dlkey').click(downloadKey);
-    $('#encryptbutton').click(readfile);
 //    $('#dldecrypt').click(dlEncryptedData);
     $('#decrypt').click(decrypt);
     $('#readprivkey').click(readprivkey);
