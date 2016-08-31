@@ -66,16 +66,6 @@
 
 	<script>
 
-$.urlParam = function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
-    if (results==null){
-       return null;
-    }
-    else{
-       return results[1] || 0;
-    }
-}
-
     // define the characters to pick from
     var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
     var genRandomString = function genRandomString(keyLength){
@@ -129,7 +119,7 @@ $.urlParam = function(name){
     };
 
     function getpublickey() {
-      window.email = $.urlParam('email');
+      window.email = urlParam('email');
       $.get( "http://localhost:8000/securemsg/json_get_publickey?email_address="+window.email, function( data ) {
         window.glob_pubkey = data;
       });
