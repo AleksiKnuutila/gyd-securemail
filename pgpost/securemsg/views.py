@@ -7,6 +7,8 @@ from .forms import DataRequestForm
 from .models import PublicKey, KeyMaster, DataRequest
 from .libs.mail import send_login_mail
 
+import json
+
 import pdb
 
 def index(request):
@@ -48,6 +50,12 @@ def sendfile_index(request):
     template = loader.get_template('securemsg/sendfile_index.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def json_get_publickey(request):
+    email = request.GET['email_address']
+    km = KeyMaster.objects.filter(email=email)[0]
+    dict = {'email': km.email,'public_key': km.public_key}
+    return HttpResponse(json.dumps(dict))
 
 def encryptfile(request):
     email = request.POST['email_address']
