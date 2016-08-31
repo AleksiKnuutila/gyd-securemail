@@ -19,7 +19,7 @@
 				<div class="valign">
 						<p class="explanationText">This is a response to the request of <span id="fromwhom" class="highlightText"> GEORGIA SMITH</span> for her data from <span class="highlightText" id="towhom"> NORDEA GROUP</span>.
 						<br>
-            <label for="fileselect" style="float: left" class="custom-file-upload green">ATTACH FILES</label><p style="margin-top: 46px; color: black; display: none;" id="encryptConfirmation" class="explanationText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File attached and encrypted.</p>
+            <label for="fileselect" style="float: left" class="custom-file-upload green">ATTACH FILES</label><div style="margin-top: 46px; color: black; display: none;" id="encryptConfirmation" class="explanationText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File attached and encrypted.</div>
    					<input type="file" id="fileselect" class="green" style="display:none" onchange="afterClick()">
             <!--<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>-->
 						</p>
@@ -52,6 +52,8 @@
 
     // define the characters to pick from
     var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
+    window.glob_filename = '';
+    window.glob_fileread = '';
     var genRandomString = function genRandomString(keyLength){
       var randomstring = '';
 
@@ -112,9 +114,18 @@
 
     var send = function send() {
       csrf = $('[name="csrfmiddlewaretoken"]').val();
+        var message = $('#message').val();
+        var from_address = $('#contactInfo').val();
+        var dict = {
+          'filename': window.glob_filename,
+          'data': window.glob_fileread,
+          'message':message,
+          'from_address':from_address
+        };
+        var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
       var post_data = {
         'email': window.email,
-        'data_blob': window.glob_data_blob,
+        'data_blob': jsonenc,
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_addencrypted", post_data, function( resp ) {
@@ -150,20 +161,11 @@
 
     var readfile = function readfile() {
       var file = document.getElementById("fileselect").files[0];
-      var fn = file.name;
+      window.glob_filename = file.name;
       var reader = new FileReader();
 
       reader.addEventListener("load", function () {
-        var message = $('#message').val();
-        var from_address = $('#contactInfo').val();
-        var dict = {
-          'filename': fn,
-          'data':reader.result,
-          'message':message,
-          'from_address':from_address
-        };
-        var jsonenc = JSON.stringify(encrypt(JSON.stringify(dict)));
-        window.glob_data_blob = jsonenc;
+        window.glob_fileread = reader.result;
         //$('#id_data_blob').val(jsonenc);
         //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
         //saveAs(blob, "special.file");
@@ -174,6 +176,7 @@
 
     var afterClick = function afterClick() {
       readfile();
+      $('#encryptConfirmation').attr({'style':'margin-top: 46px; color: black;'})
     }
     //$('#attachDataButton').click(readfile);
     $('#sendForm').click(send);
