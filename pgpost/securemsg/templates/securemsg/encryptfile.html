@@ -1,0 +1,254 @@
+{% extends 'securemsg/base.html' %}
+
+{% block body_block %}
+
+  Encrypt file!!
+
+<form action="/securemsg/addencrypted" method="post">
+    {% csrf_token %}
+    <input type="text" name="email" id="email" value="{{ email }}">
+    <label for="id_data_blob" class="">Data blob:</label>
+    <textarea cols="80" id="id_data_blob" name="data_blob" rows="20" width="100%" required=""></textarea>
+    <textarea name="public_key" id="public_key">{{ public_key }}</textarea>
+    <input type="submit" value="Submit" />
+</form>
+
+<br><br>
+<br><br>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<div class="row">
+  <form action="{% url 'securemsg:addkey' %}" method="post" class="col s12">
+    <div class="row">
+      {% csrf_token %}
+      <!--
+      <div class="input-field col s6">
+        <textarea rows="6" cols="50" id="public_key" class="materialize-textarea"></textarea>
+        <label for="public_key">Public Key</label>
+      </div>
+      -->
+      <div class="input-field col s6">
+
+        <input id="myFile" type="file"/>
+        <input type="button" value="encrypt" id="encryptbutton" />
+        <input type="button" value="dl and decrypt" id="dldecrypt" />
+
+      </div>
+      <div class="input-field col s6">
+        <!--
+        <input id="public_key" name="public_key" type="text">
+        <label for="public_key" data-error="wrong" data-success="right">Email Address</label>
+        -->
+        <textarea id="public_key" name="public_key" class="materialize-textarea"></textarea>
+        <textarea id="public_key" name="public_key" class="materialize-textarea"></textarea>
+        <label for="public_key" data-error="wrong" data-success="right">Public Key</label>
+      </div>
+    </div>
+  <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+    <i class="material-icons right">send</i>
+  </button>
+  </form>
+</div>
+
+<br><br>
+<br><br>
+<br><br>
+
+Private key:
+
+<textarea rows="4" cols="50" name="privkey" id="privkey">
+</textarea>
+
+<br>&nbsp;<br>
+<button class="btn waves-effect waves-light" type="button" id="generate">Generate New Key</button>
+<br>&nbsp;<br>
+<span><i><small id="time-report"></small></i></span>
+<br>&nbsp;<br>
+
+<button class="btn waves-effect waves-light" type="button" id="dlkey">Download Private Key</button>
+
+<script type="text/javascript">
+  $(function () {
+
+function dataURItoBlob(dataURI) {
+  // convert base64 to raw binary data held in a string
+  // doesn't handle URLEncoded DataURIs - see SO answer #6850276 for code that does this
+  var byteString = atob(dataURI.split(',')[1]);
+
+  // separate out the mime component
+  var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0]
+
+  // write the bytes of the string to an ArrayBuffer
+  var ab = new ArrayBuffer(byteString.length);
+  var ia = new Uint8Array(ab);
+  for (var i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+  }
+
+  // write the ArrayBuffer to a blob, and you're done
+  var blob = new Blob([ab], {type: mimeString});
+  return blob;
+
+  // Old code
+  // var bb = new BlobBuilder();
+  // bb.append(ab);
+  // return bb.getBlob(mimeString);
+}
+
+    var decrypt = function decrypt(encryptedKey, encryptedData) {
+      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
+        var rsaDecrypt = new JSEncrypt();
+        var privateKey = $('#privkey').val();
+        rsaDecrypt.setPrivateKey(privateKey);
+        var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
+        var b64content = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
+        var blob = dataURItoBlob(b64content);
+        //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "decoded.file");
+      });
+    }
+
+    //Change the key size value for new keys
+    $(".change-key-size").each(function (index, value) {
+      var el = $(value);
+      var keySize = el.attr('data-value');
+      el.click(function (e) {
+        var button = $('#key-size');
+        button.attr('data-value', keySize);
+        button.html(keySize + ' bit <span class="caret"></span>');
+        e.preventDefault();
+      });
+    });
+
+    var generateKeys = function () {
+      //var sKeySize = $('#key-size').attr('data-value');
+      //var keySize = parseInt(sKeySize);
+      var keySize = 1024;
+      var crypt = new JSEncrypt({default_key_size: keySize});
+      var async = $('#async-ck').is(':checked');
+      var dt = new Date();
+      var time = -(dt.getTime());
+      if (async) {
+        $('#time-report').text('.');
+        var load = setInterval(function () {
+          var text = $('#time-report').text();
+          $('#time-report').text(text + '.');
+        }, 500);
+        crypt.getKey(function () {
+          clearInterval(load);
+          dt = new Date();
+          time += (dt.getTime());
+          $('#time-report').text('Generated in ' + time + ' ms');
+          $('#privkey').val(crypt.getPrivateKey());
+          $('#pubkey').val(crypt.getPublicKey());
+        });
+        return;
+      }
+      crypt.getKey();
+      dt = new Date();
+      time += (dt.getTime());
+      $('#time-report').text('Generated in ' + time + ' ms');
+      $('#privkey').val(crypt.getPrivateKey());
+      $('#public_key').val(crypt.getPublicKey());
+    };
+
+    var downloadKey = function () {
+      var privKey = $('#privkey').val();
+      var blob = new Blob([privKey], {type: "text/plain;charset=utf-8"});
+      saveAs(blob, "privatekey.rsa");
+    }
+
+    var formfile = '';
+    var readfile = function readfile() {
+      var file = document.getElementById("myFile").files[0];
+      var reader = new FileReader();
+
+      reader.addEventListener("load", function () {
+        var jsonenc = JSON.stringify(encrypt(reader.result));
+        $('#id_data_blob').val(jsonenc);
+        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
+        //saveAs(blob, "special.file");
+      }, false);
+
+      reader.readAsDataURL(file);
+    }
+
+//    var dlEncryptedData = function dlEncryptedData() {
+//      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
+//        var rsaDecrypt = new JSEncrypt();
+//        var privateKey = $('#privkey').val();
+//        rsaDecrypt.setPrivateKey(privateKey);
+//        var aeskey = JSON.parse(rsaDecrypt.decrypt(encryptedKey));
+//        return JSON.parse(CryptoJS.AES.decrypt(encryptedData, aeskey['key']).toString(CryptoJS.enc.Utf8));
+//      });
+//     }
+
+    // If they wish to generate new keys.
+    $('#generate').click(generateKeys);
+    $('#dlkey').click(downloadKey);
+    $('#encryptbutton').click(readfile);
+//    $('#dldecrypt').click(dlEncryptedData);
+    $('#dldecrypt').click(decrypt);
+    //generateKeys();
+
+    // code below from https://medium.com/@tikiatua/symmetric-and-asymmetric-encryption-with-javascript-and-go-240043e56daf
+
+    // define the characters to pick from
+    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
+    // create a key for symmetric encryption
+    // pass in the desired length of your key
+    var genRandomString = function genRandomString(keyLength){
+      var randomstring = '';
+
+      for (var i=0; i < keyLength; i++) {
+        var rnum = Math.floor(Math.random() * chars.length);
+        randomstring += chars.substring(rnum,rnum+1);
+      }
+      return randomstring;
+    };
+
+    // encrypt a javascript object into a payload to be sent
+    // to a server or stored on the client
+    var encrypt = function encrypt(data) {
+
+      var publicKey = $('#public_key').val();
+      // Create a new encryption key (with a specified length)
+      var key = genRandomString(50);
+      // convert data to a json string
+      //var dataAsString = JSON.stringify(data);
+      var dataAsString = data;
+      // encrypt the data symmetrically
+      // (the cryptojs library will generate its own 256bit key!!)
+      var aesEncrypted = CryptoJS.AES.encrypt(dataAsString, key);
+      // get the symmetric key and initialization vector from
+      // (hex encoded) and concatenate them into one string
+      var aesKey = JSON.stringify({
+//        key : String(aesEncrypted.key),
+        key : String(key),
+        iv : String(aesEncrypted.iv)
+      });
+      // the data is base64 encoded
+      var encryptedMessage = aesEncrypted.toString();
+
+      // we create a new JSEncrypt object for rsa encryption
+      var rsaEncrypt = new JSEncrypt();
+
+      // we set the public key (which we passed into the function)
+      rsaEncrypt.setPublicKey(publicKey);
+      // now we encrypt the key & iv with our public key
+      var encryptedKey = rsaEncrypt.encrypt(aesKey);
+      // and concatenate our payload message
+      var payload = {
+        encryptedKey: encryptedKey,
+        encryptedMessage: encryptedMessage
+      };
+
+      return payload;
+    };
+
+  });
+
+</script>
+
+{% endblock %}

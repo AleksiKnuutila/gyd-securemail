@@ -1,0 +1,12 @@
+{% extends 'securemsg/base.html' %}
+
+{% block body_block %}
+
+<form action="/securemsg/encryptfile" method="post">
+    {% csrf_token %}
+    email address:
+    <input type="text" id="email_address" name="email_address" />
+    <input type="submit" value="Submit" />
+</form>
+
+{% endblock %}

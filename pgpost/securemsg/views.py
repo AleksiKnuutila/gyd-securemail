@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import loader
 
 from .forms import PublicKeyForm
+from .forms import DataRequestForm
 from .models import PublicKey, KeyMaster, DataRequest
 from .libs.mail import send_login_mail
 
@@ -43,7 +44,24 @@ def addkey(request):
     else:
         return HttpResponseRedirect('/securemsg/addkey/')
 
+def sendfile_index(request):
+    template = loader.get_template('securemsg/sendfile_index.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
 
-def datarequest(request,slug):
-    datareq = DataRequest.objects.get(slug=slug)
-    return HttpResponse(datareq.data_blob)
+def encryptfile(request):
+    email = request.POST['email_address']
+    km = KeyMaster.objects.filter(email=email)
+    public_key = km[0].public_key
+    template = loader.get_template('securemsg/encryptfile.html')
+    form = DataRequestForm()
+    context = {'public_key':public_key,'form':form,'email':email}
+    return HttpResponse(template.render(context, request))
+
+def addencrypted(request):
+    pdb.set_trace()
+    km = KeyMaster.objects.filter(email=request.POST['email'])[0]
+    dr = DataRequest(key_master=km,data_blob=request.POST['data_blob'])
+    dr.save()
+    template = loader.get_template('securemsg/addkey.html')
+    context = {}
