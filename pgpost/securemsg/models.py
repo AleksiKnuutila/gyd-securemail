@@ -11,7 +11,7 @@ class PublicKey(models.Model):
 # generate a random string to use as a slug for the request
 # not really guaranteed to be unique but should be fine for now...
 def randomString():
-    return get_random_string(length=32)
+    return get_random_string(length=12)
 
 """ KeyMaster model, holds info on requester and their public key """
 class KeyMaster(models.Model):

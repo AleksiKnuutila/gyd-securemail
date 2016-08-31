@@ -1,235 +1,186 @@
 {% extends 'securemsg/base.html' %}
 
 {% block body_block %}
+{% csrf_token %}
 
-Here we will generate a <b>key</b>!
-<br><br>
-<br><br>
+<link rel="stylesheet" href="/static/pgpost/css/styles.css">
 
-<div class="row">
-    <div class="row">
-      {% csrf_token %}
-      <!--
-      <div class="input-field col s6">
-        <textarea rows="6" cols="50" id="public_key" class="materialize-textarea"></textarea>
-        <label for="public_key">Public Key</label>
-      </div>
-      -->
-      <div class="input-field col s6">
-        <input id="address" name="email_address" type="text">
-        <label for="email_address" data-error="wrong" data-success="right">Email Address</label>
-      </div>
-      <div class="input-field col s6">
-        <!--
-        <input id="public_key" name="public_key" type="text">
-        <label for="public_key" data-error="wrong" data-success="right">Email Address</label>
-        -->
-      </div>
-    </div>
-  <button class="btn waves-effect waves-light" type="submit" id="submit_email" name="action">Submit</button>
-  </form>
+  <div class="container">
+  	<div class="row header">
+		<h3 class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> GetYourData.org Secure mail  </h3>
+		<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Simple, secure way to receive your personal data from private entities. The last step of GetYourData.org process: replacing e-mail.</p>
+ 	</div>
+
+ 	<div class="row">
+      	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2 ">
+		  	<div class="valign">
+			  <p  id="part1Scroll"  class="feedbackMessage scrollspy"> 1. Start by confirming your email adress </p>
+			  <span>
+			    <input class="balloon " id="email" type="text" placeholder="myname@example.com" /><label for="email">Email</label>
+			  </span>
+				<br><button class="green" onclick="sendConfirmationEmail()"> get confirmation code</button>
+				<a id="linktopart2" href="#part2Scroll"></a>
+    	  	</div>
+     	</div>
+
+     	<div id="part2" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2">
+			<div class="valign">
+		      	<p id="part2Scroll" class="scrollspy feedbackMessage"> 2. Now paste the confirmation code you recieved in your email. </p>
+				<span>
+				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
+				</span>
+				<br><button class="green" onclick='checkConfirmationResponse()'> go</button>
+				<a id="linktopart3" href="#part3Scroll"></a>
+	      	</div>
+	    </div>
+
+      	<div id="part3" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l6 offset-l3">
+			<div class="valign">
+				<p id="part3Scroll" class="scrollspy feedbackMessage"> Your private key has been generated and public key has been saved.</p>
+				<button id="fileSave" onclick="saveFile()"> Get private key </button>
+				<p> Keep it somewhere where you can remember. You ll need it to open the response.</p>
+			</div>
+      	</div>
+
+	</div>
+
 </div>
-<br><br>
-<br><br>
-
-      <div class="input-field col s6">
-        <input id="confirmation_token" name="confirmation_token" type="text">
-        <label for="email_address" data-error="wrong" data-success="right">Confirmation code</label>
-      </div>
-  <button class="btn waves-effect waves-light" type="submit" id="submit_confirmation_token" name="action">Submit confirmation</button>
 
 
-<br><br>
-<br><br>
-<br><br>
+	<script>
 
-<button class="btn waves-effect waves-light" type="button" id="dlkey">Download Private Key</button>
+		 $(document).ready(function(){
+		    $('.scrollspy').scrollSpy();
+		  });
 
-<script type="text/javascript">
-  $(function () {
 
-    var send_addkeymaster = function send_addkeymaster() {
+		// Animate to next part of the 'form / process'
+		function sendConfirmationEmail(){
+
+			console.log('CALLED: sendConfirmationEmail')
+
+			// If have time put animated working-on-it gif
+
+
+			//Change view styles
+			$('#part1').addClass('done');
+
+			$('#part1').removeClass('active');
+			$('#part1').removeClass('z-depth-5');
+			$('#part2').removeClass('inactive');
+			$('#part2').addClass('z-depth-5');
+			$('#part2').addClass('active');
+
+			//Rest of code
       csrf = $('[name="csrfmiddlewaretoken"]').val();
-      email = $('#address').val();
+      email = $('#email').val();
       var post_data = {
         'email': email,
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_addkeymaster", post_data, function( resp ) {
-        alert(resp);
+        rj = JSON.parse(resp);
+        console.log("json addkeymaster");
       });
-    }
 
-    var send_confirmemail = function send_confirmemail() {
+
+			//All set to continue:
+			$('#linktopart2').click();
+
+
+		};
+
+		function checkConfirmationResponse(){
+
+			console.log('CALLED: checkConfirmationResponse')
+
+			//Rest of code
+      // transition is only done after we receive OK for adding the key
+
+      var send_addkey = function send_addkey() {
+        csrf = $('[name="csrfmiddlewaretoken"]').val();
+        confirmation_token = $('#confirmation_token').val();
+        var post_data = {
+          'email': window.email,
+          'public_key': window.glob_pubkey,
+          'csrfmiddlewaretoken': csrf
+        };
+        $.post( "http://localhost:8000/securemsg/json_addkey", post_data, function( resp ) {
+          //All set to continue:
+          console.log("json addkey");
+          //Change view styles
+    			$('#part2').addClass('done');
+
+    			$('#part2').removeClass('z-depth-5');
+    			$('#part2').removeClass('active');
+    			$('#part3').removeClass('inactive');
+
+    			$('#part3').addClass('z-depth-5');
+    			$('#part3').addClass('active');
+
+    			$('#linktopart3').click();
+
+        });
+      }
+
+      var generateKeys = function () {
+        //var sKeySize = $('#key-size').attr('data-value');
+        //var keySize = parseInt(sKeySize);
+        var keySize = 1024;
+        var crypt = new JSEncrypt({default_key_size: keySize});
+        var async = $('#async-ck').is(':checked');
+        var dt = new Date();
+        var time = -(dt.getTime());
+        if (async) {
+          $('#time-report').text('.');
+          var load = setInterval(function () {
+            var text = $('#time-report').text();
+            $('#time-report').text(text + '.');
+          }, 500);
+          crypt.getKey(function () {
+            clearInterval(load);
+            dt = new Date();
+            time += (dt.getTime());
+            $('#time-report').text('Generated in ' + time + ' ms');
+            $('#privkey').val(crypt.getPrivateKey());
+            $('#pubkey').val(crypt.getPublicKey());
+          });
+          return;
+        }
+        crypt.getKey();
+        dt = new Date();
+        time += (dt.getTime());
+        $('#time-report').text('Generated in ' + time + ' ms');
+        window.glob_privkey = crypt.getPrivateKey();
+        window.glob_pubkey = crypt.getPublicKey();
+      };
+
+
       csrf = $('[name="csrfmiddlewaretoken"]').val();
-      confirmation_token = $('#confirmation_token').val();
+      confirmation_token = $('#confirmation').val();
       var post_data = {
         'confirmation_token': confirmation_token,
         'csrfmiddlewaretoken': csrf
       };
       $.post( "http://localhost:8000/securemsg/json_confirmemail", post_data, function( resp ) {
-        alert(resp);
+        rj = JSON.parse(resp);
+
+        if (rj.response == "200") {
+          generateKeys();
+          // send public key
+          send_addkey();
+        }
       });
-    }
 
-    var send_addkey = function send_addkey() {
-      csrf = $('[name="csrfmiddlewaretoken"]').val();
-      confirmation_token = $('#confirmation_token').val();
-      var post_data = {
-        'email': window.email,
-        'public_key': window.glob_pubkey,
-        'csrfmiddlewaretoken': csrf
-      };
-      $.post( "http://localhost:8000/securemsg/json_addkey", post_data, function( resp ) {
-        alert(resp);
-      });
-    }
+		}
 
-    var step1 = function step1() {
-      send_addkeymaster();
-      // save to global variable
-      window.email = $('#address').val();
-      // interface change here
-    }
-
-    var step2 = function step2() {
-      send_confirmemail();
-      // generate public and private key
-      generateKeys();
-      // send public key
-      send_addkey();
-      // interface change here
-    }
-
-    var step3 = function step3() {
-      // save private key
+		function saveFile(){
       var blob = new Blob([window.glob_privkey], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "privatekey.rsa");
-      // interface change here
-    }
 
-    $('#submit_email').click(step1);
-    $('#submit_confirmation_token').click(step2);
-    $('#dlkey').click(step3);
+			//Save file functionality
+		}
 
-    //Change the key size value for new keys
-    $(".change-key-size").each(function (index, value) {
-      var el = $(value);
-      var keySize = el.attr('data-value');
-      el.click(function (e) {
-        var button = $('#key-size');
-        button.attr('data-value', keySize);
-        button.html(keySize + ' bit <span class="caret"></span>');
-        e.preventDefault();
-      });
-    });
-
-    var generateKeys = function () {
-      //var sKeySize = $('#key-size').attr('data-value');
-      //var keySize = parseInt(sKeySize);
-      var keySize = 1024;
-      var crypt = new JSEncrypt({default_key_size: keySize});
-      var async = $('#async-ck').is(':checked');
-      var dt = new Date();
-      var time = -(dt.getTime());
-      if (async) {
-        $('#time-report').text('.');
-        var load = setInterval(function () {
-          var text = $('#time-report').text();
-          $('#time-report').text(text + '.');
-        }, 500);
-        crypt.getKey(function () {
-          clearInterval(load);
-          dt = new Date();
-          time += (dt.getTime());
-          $('#time-report').text('Generated in ' + time + ' ms');
-          $('#privkey').val(crypt.getPrivateKey());
-          $('#pubkey').val(crypt.getPublicKey());
-        });
-        return;
-      }
-      crypt.getKey();
-      dt = new Date();
-      time += (dt.getTime());
-      $('#time-report').text('Generated in ' + time + ' ms');
-      window.glob_privkey = crypt.getPrivateKey();
-      window.glob_pubkey = crypt.getPublicKey();
-    };
-
-    var downloadKey = function () {
-      var privKey = $('#privkey').val();
-      var blob = new Blob([privKey], {type: "text/plain;charset=utf-8"});
-      saveAs(blob, "privatekey.rsa");
-    }
-
-    // If they wish to generate new keys.
-    $('#generate').click(generateKeys);
-    $('#dlkey').click(downloadKey);
-    //generateKeys();
-
-    // code below from https://medium.com/@tikiatua/symmetric-and-asymmetric-encryption-with-javascript-and-go-240043e56daf
-
-    // define the characters to pick from
-    var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
-    // create a key for symmetric encryption
-    // pass in the desired length of your key
-    var genRandomString = function genRandomString(keyLength){
-      var randomstring = '';
-
-      for (var i=0; i < keyLength; i++) {
-        var rnum = Math.floor(Math.random() * chars.length);
-        randomstring += chars.substring(rnum,rnum+1);
-      }
-      return randomstring;
-    };
-
-    // encrypt a javascript object into a payload to be sent
-    // to a server or stored on the client
-    var encrypt = function encrypt(data) {
-
-      var publicKey = $('#public_key').val();
-      // Create a new encryption key (with a specified length)
-      var key = genRandomString(50);
-      // convert data to a json string
-      var dataAsString = JSON.stringify(data);
-      // encrypt the data symmetrically
-      // (the cryptojs library will generate its own 256bit key!!)
-      var aesEncrypted = CryptoJS.AES.encrypt(dataAsString, key);
-      // get the symmetric key and initialization vector from
-      // (hex encoded) and concatenate them into one string
-      var aesKey = JSON.stringify({
-//        key : String(aesEncrypted.key),
-        key : String(key),
-        iv : String(aesEncrypted.iv)
-      });
-      // the data is base64 encoded
-      var encryptedMessage = aesEncrypted.toString();
-
-      // we create a new JSEncrypt object for rsa encryption
-      var rsaEncrypt = new JSEncrypt();
-
-      // we set the public key (which we passed into the function)
-      rsaEncrypt.setPublicKey(publicKey);
-      // now we encrypt the key & iv with our public key
-      var encryptedKey = rsaEncrypt.encrypt(aesKey);
-      // and concatenate our payload message
-      var payload = {
-        encryptedKey: encryptedKey,
-        encryptedMessage: encryptedMessage
-      };
-
-      return payload;
-    };
-
-    var decrypt = function decrypt(encryptedKey, encryptedData) {
-      var rsaDecrypt = new JSEncrypt();
-      var privateKey = $('#privkey').val();
-      rsaDecrypt.setPrivateKey(privateKey);
-      var aeskey = JSON.parse(rsaDecrypt.decrypt(encryptedKey));
-      return JSON.parse(CryptoJS.AES.decrypt(encryptedData, aeskey['key']).toString(CryptoJS.enc.Utf8));
-    }
-
-  });
-</script>
+	</script>
 
 {% endblock %}
