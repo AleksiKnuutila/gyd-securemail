@@ -63,16 +63,6 @@ function dataURItoBlob(dataURI) {
     }
 
     var decrypt = function decrypt(encryptedKey, encryptedData) {
-//      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
-//        var rsaDecrypt = new JSEncrypt();
-//        var privateKey = $('#privkey').val();
-//        rsaDecrypt.setPrivateKey(privateKey);
-//        var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
-//        var b64content = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
-//        var blob = dataURItoBlob(b64content);
-//        //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-//        saveAs(blob, "decoded.file");
-//      });
         var rsaDecrypt = new JSEncrypt();
         var privateKey = $('#privkey').val();
         rsaDecrypt.setPrivateKey(privateKey);
@@ -80,10 +70,13 @@ function dataURItoBlob(dataURI) {
         datareq = JSON.parse(window.glob_datareq);
         data = JSON.parse(datareq['data_blob']);
         var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
-        var b64content = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
+        var jsondec = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
+        var datadict = JSON.parse(jsondec);
+        var b64content = datadict['data'];
+        var fn = datadict['filename'];
         var blob = dataURItoBlob(b64content);
         //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-        saveAs(blob, "decoded.file");
+        saveAs(blob, fn);
     }
 
     //Change the key size value for new keys
@@ -98,44 +91,6 @@ function dataURItoBlob(dataURI) {
       });
     });
 
-    var generateKeys = function () {
-      //var sKeySize = $('#key-size').attr('data-value');
-      //var keySize = parseInt(sKeySize);
-      var keySize = 1024;
-      var crypt = new JSEncrypt({default_key_size: keySize});
-      var async = $('#async-ck').is(':checked');
-      var dt = new Date();
-      var time = -(dt.getTime());
-      if (async) {
-        $('#time-report').text('.');
-        var load = setInterval(function () {
-          var text = $('#time-report').text();
-          $('#time-report').text(text + '.');
-        }, 500);
-        crypt.getKey(function () {
-          clearInterval(load);
-          dt = new Date();
-          time += (dt.getTime());
-          $('#time-report').text('Generated in ' + time + ' ms');
-          $('#privkey').val(crypt.getPrivateKey());
-          $('#pubkey').val(crypt.getPublicKey());
-        });
-        return;
-      }
-      crypt.getKey();
-      dt = new Date();
-      time += (dt.getTime());
-      $('#time-report').text('Generated in ' + time + ' ms');
-      $('#privkey').val(crypt.getPrivateKey());
-      $('#public_key').val(crypt.getPublicKey());
-    };
-
-    var downloadKey = function () {
-      var privKey = $('#privkey').val();
-      var blob = new Blob([privKey], {type: "text/plain;charset=utf-8"});
-      saveAs(blob, "privatekey.rsa");
-    }
-
 
 //    var dlEncryptedData = function dlEncryptedData() {
 //      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
@@ -148,8 +103,6 @@ function dataURItoBlob(dataURI) {
 //     }
 
     // If they wish to generate new keys.
-    $('#generate').click(generateKeys);
-    $('#dlkey').click(downloadKey);
 //    $('#dldecrypt').click(dlEncryptedData);
     $('#decrypt').click(decrypt);
     $('#readprivkey').click(readprivkey);
