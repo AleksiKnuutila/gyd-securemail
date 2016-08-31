@@ -17,7 +17,7 @@ Choose private key:
   $(function () {
 
     function get_datareq() {
-      window.slug = $.urlParam('slug');
+      window.slug = urlParam('slug');
       $.get( "http://localhost:8000/securemsg/json_get_datareq?slug="+window.slug, function( data ) {
         window.glob_datareq = data;
       });
