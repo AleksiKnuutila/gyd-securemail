@@ -13,9 +13,22 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import ConfigParser
 import os
 
-CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/pgpost/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, '../static/pgpost'),
+)
+
+
+# config
 config = ConfigParser.RawConfigParser()
-config_file_path = os.path.abspath(os.path.join(CURRENT_DIR, "secret.cfg"))
+config_file_path = os.path.abspath(os.path.join(PROJECT_ROOT, "secret.cfg"))
 
 with open(config_file_path) as f:
     config.readfp(f)
@@ -127,15 +140,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-
-STATIC_URL = '/static/'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-    '/var/www/static/',
-]
 
 EMAIL_HOST = '127.0.0.1'
 EMAIL_PORT = 1025
