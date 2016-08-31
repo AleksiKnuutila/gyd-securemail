@@ -94,19 +94,29 @@ def json_confirmemail(request):
         keymaster = KeyMaster.objects.get(confirmation_token=request.POST['confirmation_token'])
         keymaster.confirmed = True
         keymaster.save()
-        return HttpResponse(json.dumps({'response': '200 cool beans'}))
+        return HttpResponse(json.dumps({'response': '200'}))
     except KeyMaster.DoesNotExist:
-        return HttpResponse(json.dumps({'response': '404 Not found'}))
+        return HttpResponse(json.dumps({'response': '404'}))
 
 def json_addkeymaster(request):
-    keymaster = KeyMaster(email = request.POST['email'])
-    keymaster.save()
+    try:
+        keymaster = KeyMaster.objects.get(email = request.POST['email'])
+    # not found, should create new one
+    except KeyMaster.DoesNotExist:
+        keymaster = KeyMaster(email = request.POST['email'])
+        keymaster.save()
+
     send_login_mail(keymaster.email, keymaster.confirmation_token)
-    return HttpResponse(json.dumps({'response': '200 cool beans'}))
+    return HttpResponse(json.dumps({'response': '200'}))
 
 
 def json_addkey(request):
-    keymaster = KeyMaster.objects.get(email = request.POST['email'])
+    try:
+        keymaster = KeyMaster.objects.get(email = request.POST['email'])
+
+    except KeyMaster.DoesNotExist:
+        return HttpResponse(json.dumps({'response': '404'}))
+
     keymaster.public_key = request.POST['public_key']
     keymaster.save()
     return HttpResponse(json.dumps({'response': '200 cool beans'}))
