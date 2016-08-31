@@ -16,7 +16,6 @@ import os
 CURRENT_DIR = os.path.abspath(os.path.dirname(__file__))
 config = ConfigParser.RawConfigParser()
 config_file_path = os.path.abspath(os.path.join(CURRENT_DIR, "secret.cfg"))
-print config_file_path
 
 with open(config_file_path) as f:
     config.readfp(f)
@@ -36,6 +35,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+APP_BASE_URL = "%s://%s" % (config.get('app', 'scheme'), config.get('app', 'domain'))
+if config.has_option('app', 'port'):
+  APP_BASE_URL += ":%s" % config.get('app', 'port')
+
+print(APP_BASE_URL)
 
 # Application definition
 
