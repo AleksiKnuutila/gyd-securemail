@@ -81,7 +81,7 @@
         'email': email,
         'csrfmiddlewaretoken': csrf
       };
-      $.post( "http://localhost:8000/securemsg/json_addkeymaster", post_data, function( resp ) {
+      $.post( "/securemsg/json_addkeymaster", post_data, function( resp ) {
         rj = JSON.parse(resp);
         console.log("json addkeymaster");
       });
@@ -108,7 +108,7 @@
           'public_key': window.glob_pubkey,
           'csrfmiddlewaretoken': csrf
         };
-        $.post( "http://localhost:8000/securemsg/json_addkey", post_data, function( resp ) {
+        $.post( "/securemsg/json_addkey", post_data, function( resp ) {
           //All set to continue:
           console.log("json addkey");
           //Change view styles
@@ -165,7 +165,7 @@
         'confirmation_token': confirmation_token,
         'csrfmiddlewaretoken': csrf
       };
-      $.post( "http://localhost:8000/securemsg/json_confirmemail", post_data, function( resp ) {
+      $.post( "/securemsg/json_confirmemail", post_data, function( resp ) {
         rj = JSON.parse(resp);
 
         if (rj.response == "200") {
