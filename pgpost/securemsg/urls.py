@@ -8,7 +8,6 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^genkey$', views.genkey, name='genkey'),
     url(r'^encryptfile$', views.encryptfile, name='encryptfile'),
-    url(r'^addencrypted$', views.addencrypted, name='addencrypted'),
     url(r'^sendfile_index$', views.sendfile_index, name='sendfile_index'),
     url(r'^decrypt_index$', views.decrypt_index, name='decrypt_index'),
     url(r'^json_get_publickey', views.json_get_publickey, name='json_get_publickey'),
@@ -16,5 +15,6 @@ urlpatterns = [
     url(r'^json_addkeymaster$', views.json_addkeymaster, name='json_addkeymaster'),
     url(r'^json_confirmemail$', views.json_confirmemail, name='json_confirmemail'),
     url(r'^json_addkey$', views.json_addkey, name='json_addkey'),
+    url(r'^json_addencrypted$', views.json_addencrypted, name='json_addencrypted'),
     url(r'^login/(?P<confirmation>[-\w]+)/$', views.login, name='login'),
 ]
