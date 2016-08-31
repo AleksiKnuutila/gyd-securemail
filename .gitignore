@@ -3,3 +3,5 @@ pgpostenv
 pgpost/pgpost/secret.cfg
 db.sqlite3
 */**/.DS_Store
+.DS_Store
+*-old
