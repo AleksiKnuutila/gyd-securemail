@@ -4,6 +4,22 @@ body{
 	font-size: 16px;
 }
 
+.custom-file-upload {
+	padding: 0.5em 1em;
+	border-radius:2px;
+	border: 1px;
+	color:white;
+	font-size: 1em;
+  margin: 2em 0 2em 0;
+  width: 160px;
+  display: block;
+	opacity: 1;
+}
+
+.custom-file-upload:hover{
+	border-bottom: 2px solid green;
+}
+
 .container{
 	background-color: #032429;
 }
@@ -180,19 +196,3 @@ textarea.balloon:focus + label:after,
 textarea.balloon:active + label:after {
   border-top: 4px solid #7ab893;
 }*/
-
-.custom-file-upload {
-	padding: 0.5em 2em;
-	border: 0;
-	color:white;
-	font-size: 1em;
-	margin: 1em 0 1.5em  5%;
-	opacity: 1;
- 	border-radius: 3px;
-	border-bottom:2px solid #75ce6a;
-
-}
-
-.custom-file-upload:hover{
-	border-bottom: 2px solid green;
-}
