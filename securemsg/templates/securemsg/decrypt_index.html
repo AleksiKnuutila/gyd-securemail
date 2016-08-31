@@ -54,7 +54,7 @@
       // show spinner while the slug is loading?
       function get_datareq() {
         var slug = urlParam('slug');
-        $.get( "/securemsg/json_get_datareq?slug=" + slug, function( data ) {
+        $.get( "/json_get_datareq?slug=" + slug, function( data ) {
           window.glob_datareq = data;
 
         });
