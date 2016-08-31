@@ -2,28 +2,128 @@
 
 {% block body_block %}
 
-Here we will decrypt stuff!
+<link rel="stylesheet" href="/static/pgpost/css/stylesDecrypt.css">
 
-<br><br>
+<div class="container">
+	<div class="row header">
+	<h3 class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> GetYourData.org Secure mail  </h3>
+	<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Simple, secure way to receive your personal data from private entities. The last step of GetYourData.org process: replacing e-mail.</p>
+	</div>
 
-Choose private key:
-        <input id="myFile" type="file"/>
-        <input type="button" value="readprivkey" id="readprivkey" />
-        <input type="button" value="decrypt" id="decrypt" />
-        <input type="button" value="download" id="download" />
+	<div class="row">
+    	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m10 offset-m1 l8 offset-l2 ">
+	  	<div class="valign">
+		  <p  id="part1Scroll"  class="feedbackMessage scrollspy"> Upload your key to decrypt <br> your incoming message.  </p>
+			<br>
+      <label for="fileuploader" class="custom-file-upload green">
+        Upload
+      </label>
+      <input id="fileuploader" type="file" onchange="uploadKeyFile()" />
+			<a id="linktopart2" href="#part2Scroll"></a>
+  	  	</div>
+   	</div>
 
-<textarea id="privkey" name="privkey"></textarea>
+    <div id="part2" class="section inactive valign-wrapper col s10 offset-s1  m10 offset-m1 l10 offset-l1">
+    <div class="valign">
+          <p  class="feedbackMessage"> Your message: </p>
+      <div id="theMessage" >
+        <div id="part2Scroll" class="scrollspy" ></div>
+          <span id="senderInfo" class="sender"> From: Ffadga@fsdgsdg </span>
+          <p id="messageInfo">
+          Another great use of form animation is with input labels. This trend is still fairly new but it is a profound method of capturing attention. The premise behind this animation is to save space in a text field when needed.
+
+          Note that the above CodePen animated inputs snippet is also built using pure CSS. Although many frontend developers like to play with CSS animation there’s nothing wrong with adding a JavaScript alternative. This is actually much safer considering not everyone is using a CSS3-supported browser.
+          </p>
+       </div>
+      <button id="fileSave" onclick="saveFile()"> Get Your file </button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+   $(document).ready(function(){
+      $('.scrollspy').scrollSpy();
+      $('#part2').hide();
+
+      // show spinner while the slug is loading?
+      function get_datareq() {
+        var slug = urlParam('slug');
+        $.get( "http://localhost:8000/securemsg/json_get_datareq?slug=" + slug, function( data ) {
+          window.glob_datareq = data;
+
+        });
+      }
+      get_datareq();
+
+
+    });
+
+    var decrypt = function decrypt(encryptedKey, encryptedData) {
+        var rsaDecrypt = new JSEncrypt();
+        var privateKey = window.privkey;
+        rsaDecrypt.setPrivateKey(privateKey);
+        //data = JSON.parse($('#data_blob').val());
+        datareq = JSON.parse(window.glob_datareq);
+        data = JSON.parse(datareq['data_blob']);
+        var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
+        var jsondec = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
+        var datadict = JSON.parse(jsondec);
+        var b64content = datadict['data'];
+        window.blob = dataURItoBlob(b64content);
+        window.fn = datadict['filename'];
+        $('#senderInfo').html("From: " + datadict['from_address']);
+        $('#messageInfo').html(datadict['message']);
+        //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
+    }
+
+
+
+  // Animate to next part of the 'form / process'
+  function uploadKeyFile(){
+
+    console.log('CALLED: uploadKeyFile')
+
+    // If have time put animated working-on-it gif
+    var file = document.getElementById("fileuploader").files[0];
+    var reader = new FileReader();
+    reader.addEventListener("load", function () {
+      window.privkey = reader.result;
+      //Change view styles
+      $('#part2').show();
+      $('#part2').css('display','block')
+      $('#part1').addClass('done');
+
+      $('#part1').removeClass('active');
+      $('#part1').removeClass('z-depth-5');
+      $('#part2').removeClass('inactive');
+      $('#part2').addClass('z-depth-5');
+      $('#part2').addClass('active');
+
+      //All set to continue:
+      decrypt();
+      $('#linktopart2').click();
+
+    }, false);
+
+    reader.readAsText(file);
+
+  };
+
+  function saveFile(){
+
+    console.log('CALLED: saveFile')
+
+    //Save decrypted file
+
+    saveAs(window.blob, window.fn);
+
+  }
+
+</script>
 
 <script type="text/javascript">
-  $(function () {
-
-    function get_datareq() {
-      window.slug = urlParam('slug');
-      $.get( "http://localhost:8000/securemsg/json_get_datareq?slug="+window.slug, function( data ) {
-        window.glob_datareq = data;
-      });
-    }
-    get_datareq();
 
 function dataURItoBlob(dataURI) {
   // convert base64 to raw binary data held in a string
@@ -51,50 +151,6 @@ function dataURItoBlob(dataURI) {
 }
 
     var formfile = '';
-    var readprivkey = function readprivkey() {
-      var file = document.getElementById("myFile").files[0];
-      var reader = new FileReader();
-      reader.addEventListener("load", function () {
-        $('#privkey').val(reader.result);
-        //var blob = new Blob([JSON.stringify(encrypt(reader.result))], {type: "text/plain;charset=utf-8"});
-        //saveAs(blob, "special.file");
-      }, false);
-
-      reader.readAsText(file);
-    }
-
-    var decrypt = function decrypt(encryptedKey, encryptedData) {
-        var rsaDecrypt = new JSEncrypt();
-        var privateKey = $('#privkey').val();
-        rsaDecrypt.setPrivateKey(privateKey);
-        //data = JSON.parse($('#data_blob').val());
-        datareq = JSON.parse(window.glob_datareq);
-        data = JSON.parse(datareq['data_blob']);
-        var aeskey = JSON.parse(rsaDecrypt.decrypt(data['encryptedKey']));
-        var jsondec = CryptoJS.AES.decrypt(data['encryptedMessage'], aeskey['key']).toString(CryptoJS.enc.Utf8);
-        var datadict = JSON.parse(jsondec);
-        var b64content = datadict['data'];
-        window.blob = dataURItoBlob(b64content);
-        window.fn = datadict['filename'];
-        //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
-    }
-
-    var download = function download() {
-        saveAs(window.blob, window.fn);
-    }
-
-    //Change the key size value for new keys
-    $(".change-key-size").each(function (index, value) {
-      var el = $(value);
-      var keySize = el.attr('data-value');
-      el.click(function (e) {
-        var button = $('#key-size');
-        button.attr('data-value', keySize);
-        button.html(keySize + ' bit <span class="caret"></span>');
-        e.preventDefault();
-      });
-    });
-
 
 //    var dlEncryptedData = function dlEncryptedData() {
 //      $.get( "http://localhost:8000/static/pgpost/encryptedtest.json", function( data ) {
@@ -108,9 +164,6 @@ function dataURItoBlob(dataURI) {
 
     // If they wish to generate new keys.
 //    $('#dldecrypt').click(dlEncryptedData);
-    $('#decrypt').click(decrypt);
-    $('#download').click(download);
-    $('#readprivkey').click(readprivkey);
     //generateKeys();
 
     // code below from https://medium.com/@tikiatua/symmetric-and-asymmetric-encryption-with-javascript-and-go-240043e56daf
@@ -129,8 +182,6 @@ function dataURItoBlob(dataURI) {
       return randomstring;
     };
 
-    // encrypt a javascript object into a payload to be sent
-    // to a server or stored on the client
     var encrypt = function encrypt(data) {
 
       var publicKey = $('#public_key').val();
@@ -168,7 +219,6 @@ function dataURItoBlob(dataURI) {
       return payload;
     };
 
-  });
 
 </script>
 
