@@ -2,6 +2,7 @@ from django.core.mail import send_mail
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+import os
 
 
 def send_login_mail(email, token):
@@ -12,7 +13,7 @@ def send_login_mail(email, token):
     mail = EmailMultiAlternatives(
       subject="GetYourData.org Secure Mail confirmation token",
       body=msg_plain,
-      from_email="GetYourData.org <robot@getyourdata.org>",
+      from_email="GetYourData.org <%s>" % os.environ['FROM_EMAIL'],
       to=[email],
       headers={"Reply-To": "noreply@datam.me"}
     )
@@ -29,7 +30,7 @@ def send_data_received_mail(email, slug):
     mail = EmailMultiAlternatives(
       subject="GetYourData.org Secure Mail response",
       body=msg_plain,
-      from_email="GetYourData.org <robot@getyourdata.org>",
+      from_email="GetYourData.org <%s>" % os.environ['FROM_EMAIL'],
       to=[email],
       headers={"Reply-To": "noreply@datam.me"}
     )

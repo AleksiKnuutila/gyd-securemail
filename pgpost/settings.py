@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.10/ref/settings/
 """
 
-import ConfigParser
+import dj_database_url
 import os
 
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -26,13 +26,6 @@ STATICFILES_DIRS = (
 )
 
 
-# config
-config = ConfigParser.RawConfigParser()
-config_file_path = os.path.abspath(os.path.join(PROJECT_ROOT, "secret.cfg"))
-
-with open(config_file_path) as f:
-    config.readfp(f)
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -41,16 +34,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config.get('app', 'secret_key')
+SECRET_KEY = os.environ['APP_SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
 
-APP_BASE_URL = "%s://%s" % (config.get('app', 'scheme'), config.get('app', 'domain'))
-if config.has_option('app', 'port'):
-  APP_BASE_URL += ":%s" % config.get('app', 'port')
+APP_BASE_URL = "%s://%s" % (os.environ['APP_SCHEME'], os.environ['APP_DOMAIN'])
+if os.environ['APP_PORT']:
+  APP_BASE_URL += ":%s" % os.environ['APP_PORT']
 
 print(APP_BASE_URL)
 
@@ -107,6 +100,11 @@ DATABASES = {
     }
 }
 
+# For Heroku
+if os.environ['DATABASE_URL']:
+    db_from_env = dj_database_url.config()
+    DATABASES['default'].update(db_from_env)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/1.10/ref/settings/#auth-password-validators
@@ -140,9 +138,10 @@ USE_L10N = True
 
 USE_TZ = True
 
+if os.environ['USE_SENDGRID']:
+  EMAIL_BACKEND = 'sgbackend.SendGridBackend'
+  SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+else:
+  EMAIL_HOST = '127.0.0.1'
+  EMAIL_PORT = 1025
 
-EMAIL_HOST = '127.0.0.1'
-EMAIL_PORT = 1025
-
-#EMAIL_BACKEND = 'sgbackend.SendGridBackend'
-#SENDGRID_API_KEY = config.get('sendgrid', 'api_key')
