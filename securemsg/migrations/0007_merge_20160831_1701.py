@@ -8,7 +8,6 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('securemsg', '0006_auto_20160831_1513'),
         ('securemsg', '0006_auto_20160831_1646'),
     ]
 
