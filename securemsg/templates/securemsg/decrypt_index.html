@@ -6,21 +6,27 @@
 
 <div class="container">
 	<div class="row header">
-	<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1"> 
-		<img src="/static/pgpost/key2.svg" width="50px"> Secure mail  
-		<img src="/static/pgpost/key4.svg" width="50px" > 
+    <div style="text-align: center">
+	<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1">
+    <!--
+		<img src="/static/pgpost/key2.svg" width="50px"> Secure mail
+		<img src="/static/pgpost/key4.svg" width="50px" >
+    -->
+    Pretty Good Post
+    <img src="/static/pgpost/padlock.svg" style="-webkit-filter: invert(1); filter: invert(1);" width="40px" > </h3>
 	</h3>
 
-	<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Simple, secure way to receive your personal data from private entities. The last step of GetYourData.org process: replacing e-mail.</p>
+	<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Receive your personal data securely, without any weird apps.</p>
+	</div>
 	</div>
 
 	<div class="row">
     	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m10 offset-m1 l8 offset-l2 ">
 	  	<div class="valign">
-		  <p  id="part1Scroll"  class="feedbackMessage scrollspy"> Upload your key to decrypt <br> your incoming message.  </p>
+        <p  id="part1Scroll"  class="feedbackMessage scrollspy"> Select your private key file to decrypt <br> your message. <br><br>For your eyes only. </p>
 			<br>
       <label for="fileuploader" class="custom-file-upload green">
-        Upload
+        Select key file
       </label>
       <input id="fileuploader" type="file" onchange="uploadKeyFile()" />
 			<a id="linktopart2" href="#part2Scroll"></a>
@@ -32,12 +38,11 @@
           <p  class="feedbackMessage"> Your message: </p>
       <div id="theMessage" >
         <div id="part2Scroll" class="scrollspy" ></div>
-          <span id="senderInfo" class="sender"> From: Ffadga@fsdgsdg </span>
+        <div id="senderinfodiv" style="text-align:left;">
+          <span id="senderInfo" class="sender"> From: </span>
+        </div>
           <p id="messageInfo">
-          Another great use of form animation is with input labels. This trend is still fairly new but it is a profound method of capturing attention. The premise behind this animation is to save space in a text field when needed.
-
-          Note that the above CodePen animated inputs snippet is also built using pure CSS. Although many frontend developers like to play with CSS animation there’s nothing wrong with adding a JavaScript alternative. This is actually much safer considering not everyone is using a CSS3-supported browser.
-          </p>
+          Decryption failed :(
        </div>
       <button id="fileSave" onclick="saveFile()"> Get Your file </button>
         </div>
