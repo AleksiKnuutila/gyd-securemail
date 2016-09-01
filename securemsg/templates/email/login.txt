@@ -5,4 +5,4 @@ here is your confirmation token for GetYourData.org Secure Mail.
 {{token}}
 
 
-Please paste it to the borwser and click go.
+Please paste it to the browser and click go.
