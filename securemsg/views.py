@@ -143,3 +143,6 @@ def login(request, confirmation):
         raise Http404("Not found")
 
     return HttpResponseRedirect('/securemsg/addkey.html')
+
+def acme_challenge(request):
+    return HttpResponse('VsvwecbgW-4Wo3pQxxcQVRL3vSN93yy7cGXQDF9vACU.anWmBs8sqFZOeU7jYejbMfH-Div1S-dDguaTRMW5nPg')
