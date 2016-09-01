@@ -145,3 +145,5 @@ else:
   EMAIL_HOST = '127.0.0.1'
   EMAIL_PORT = 1025
 
+if os.environ['SECURE_SSL_REDIRECT']:
+    SECURE_SSL_REDIRECT = True
