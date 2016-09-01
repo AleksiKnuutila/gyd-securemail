@@ -7,6 +7,7 @@
 
   <div class="container">
   	<div class="row header">
+      <div style="text-align: center">
 		<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1">
       <!--
 			<img src="/static/pgpost/key2.svg" width="50px"> Secure Email
@@ -17,9 +18,10 @@
 
 
 		</h3>
-      <p class="subtitle col s10 m10 l10 offset-m2 offset-s2 offset-l2">
-      Receive your personal data securely, without any weird apps.
-      </p>
+        <p display="display: inline-block; padding-right: 50px" class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">
+        Receive your personal data securely, without any weird apps.
+        </p>
+      </div>
  	</div>
 
  	<div class="row">
@@ -47,14 +49,14 @@
 
       	<div id="part3" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l6 offset-l3">
 			<div class="valign">
-        <p id="part3Scroll" class="scrollspy feedbackMessage">Now your private computer creates a private key. Keep it safe.
+        <p id="part3Scroll" class="scrollspy feedbackMessage">Now your computer creates a private key. Keep it safe.
         </p>
 				<button id="fileSave" onclick="saveFile()"> Save private key </button>
         <!--<p>Your computer created a private key, and sent the public key to our database.</p>-->
         <div id="saveconfirm" style="display:none;">
-          <p>We received only your public key.</p>
+          <p>Your public key was sent to our server.</p>
           <p>Others can now send you messages securely at this address: </p>
-        <pre style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;" id="url">http://ultrahack.getyourdata.org/send?email=iofejwiofewijofewfoewijfoiwfejfewoijfoo</pre>
+        <pre style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;" id="url"></pre>
         </div>
 			</div>
       	</div>
@@ -201,7 +203,7 @@
       var blob = new Blob([window.glob_privkey], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "privatekey.rsa");
 
-      var url = "http://ultrahack.getyourdata.org/send?email="+$('#email').val();
+      var url = "https://ultrahack.getyourdata.org/send?email="+$('#email').val();
       $('#url').text(url);
       $('#saveconfirm').attr({'style':'display:block;'});
 			//Save file functionality
