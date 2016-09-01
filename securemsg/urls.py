@@ -17,4 +17,5 @@ urlpatterns = [
     url(r'^json_addkey$', views.json_addkey, name='json_addkey'),
     url(r'^json_addencrypted$', views.json_addencrypted, name='json_addencrypted'),
     url(r'^login/(?P<confirmation>[-\w]+)/$', views.login, name='login'),
+    url(r'^.well-known/acme-challenge/VsvwecbgW-4Wo3pQxxcQVRL3vSN93yy7cGXQDF9vACU$', views.acme_challenge, name='acme_challenge')
 ]
