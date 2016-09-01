@@ -22,7 +22,7 @@ def send_login_mail(email, token):
     mail.send()
 
 def send_data_received_mail(email, slug):
-    link = '%s/securemsg/decrypt_index?slug=%s' % (settings.APP_BASE_URL, slug)
+    link = '%s/decrypt_index?slug=%s' % (settings.APP_BASE_URL, slug)
     context = {'link': link}
     msg_plain = render_to_string('../templates/email/data_received.txt', context)
     msg_html = render_to_string('../templates/email/data_received.html', context)
