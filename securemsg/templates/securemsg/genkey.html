@@ -203,7 +203,8 @@
       var blob = new Blob([window.glob_privkey], {type: "text/plain;charset=utf-8"});
       saveAs(blob, "privatekey.rsa");
 
-      var url = "https://ultrahack.getyourdata.org/send?email="+$('#email').val();
+      //var url = "https://ultrahack.getyourdata.org/send?email="+$('#email').val();
+      var url = "http://localhost:8000/send?email="+$('#email').val();
       $('#url').text(url);
       $('#saveconfirm').attr({'style':'display:block;'});
 			//Save file functionality
