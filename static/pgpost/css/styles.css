@@ -1,93 +1,186 @@
-body{
-	background-color: #ededed;
-	font-family: 'Roboto', sans-serif;
-	font-size: 16px;
+
+
+/* GREATER THAN MOBILE*/
+@media screen and (min-width: 900px) {
+
+  .mainPage{
+      
+      /* layout */
+      max-width: 70%;
+      margin-left: 30%;
+     
+      padding-top: 5%;
+      padding-top: 5vh;
+     
+      /* ui */
+      background-color: #ffffff;
+  }
+
+  .mainPageContainer{
+     max-width: 90%;
+     margin:0 auto;
+  }
+
+  .textContainer{
+    max-width: 500px;
+  }
+
+  input[type=text].balloon {
+   width: 400px;
+  }
+
+
+
 }
 
-.table-of-contents{
-	position: absolute;
-	visibility: hidden;;
+
+
+.backgroundTitle{
+  background-color: #111111;
+  display: inline-block;
 }
 
-.header{
-	margin-bottom: 3em;
+h3.pageTitle{
+  color: #ffffff;
+  padding: 0.1em 0.5em;
+  margin: 0;
 }
 
-.section{
-	margin-bottom: 8vh;
+
+h2.subtitle{
+  font-weight: 700;
+  text-align: left;
+  font-size: 1.5rem;
+  margin: 2em 0;
 }
 
-.container{
-	background-color: #032429;
+h5{
+  margin-bottom: 1.1em;
+  font-size: 1em;
 }
 
-.valign{
-	margin:0 auto;
+
+ol{
+  font-weight: 400;
+  font-size: 1em;
+  color: #444;
+  line-height: 1.3em;
+  margin: 0;
+  padding-left: 1em;
 }
 
-#part1,#part2,#part3{
-	min-height: 70vh;
-	text-align: center;
+
+ol li{
+  margin-bottom: 1em;
+  padding-left: 1em;
 }
 
-#part3{
-	/*min-height: 50vh;*/
-	margin-bottom: 20vh;
+
+div.paragraph{
+  margin: 2em 0;
 }
 
-.active{
-	background-color: #75ce6a;
+.part{
+  padding: 3em 2em 3em 2em;
+  color: #444;
+  transition: background 0.7s ease-in-out;
+  -webkit-transition: background 0.7s ease-in-out;
+  margin: 2em 0;
+}
+
+.part.active{
+	background-color: #daeff3;
+}
+
+.part.active .indicator{
+  display: none;
+}
+
+.part p{
+  margin-top: 0;
+  margin-bottom: 1.2em;
+  font-size: 1.1em;  
+}
+
+.part .errorbox{
+  color: #db5c70;
+  margin-top: 10px;
 }
 
 .done,.inactive{
-	opacity: 0.4;
+  height: 20px;
+  overflow:hidden;
+  padding-top: 0px; 
+  padding-bottom: 0px; 
+
+  opacity: 0.2;
+
+}
+
+#saveconfirm{
+  margin-top: 2em;
 }
 
 .inactive{
-	  pointer-events: none;
+	  pointer-events: none !important;
 }
 
 h3{
 	color: #ffffff;
 }
 
-.feedbackMessage{
-	font-size: 24px;
-	margin-bottom: 1.5em;
+.part button{
+  padding: 10px;
+  margin: 0;
+
+  display: inline-block;
+  vertical-align: top;
+  line-height: 16px;
+  background-color: white;
 }
 
-.subtitle{
-	margin: 0 auto;
+.part button:hover{
+   background-color: #111;
+   color: white;
+
 }
 
-.row span {
+.joinBox span {
   position: relative;
   display: inline-block;
-  /*margin: 30px 10px;*/
 }
 
 input[type=text].balloon {
   display: inline-block;
-  width: 320px;
   padding: 10px 0 10px 15px;
   font-family: "Open Sans", sans;
   font-weight: 400;
   font-size: 1em;
   color: #377D6A;
-  background: #efefef;
+  background: white;
   border: 0;
-  border-radius: 3px;
+
   outline: 0;
   text-indent: 60px;
   transition: all .3s ease-in-out;
   height:auto;
   margin: 0 auto;
+
+  /*border-radius: 3px;*/
+  /*background: #efefef;*/
 }
+
+input[type=text].balloon#confirmation{
+  text-indent: 127px;
+}
+
+
 input[type=text].balloon::-webkit-input-placeholder {
-  color: #efefef;
-  text-indent: 0;
+  color: #fff;
+  text-indent: 0px;
   font-weight: 300;
 }
+
 input[type=text].balloon + label {
   display: inline-block;
   position: absolute;
@@ -110,7 +203,7 @@ input[type=text].balloon + label:after {
   content: "";
   width: 0;
   height: 0;
-  top: 100%;
+  bottom: 100%;
   left: 50%;
   margin-left: -3px;
   border-left: 3px solid transparent;
@@ -135,56 +228,9 @@ input[type=text].balloon:active + label {
   color: #fff;
   text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
   background: #032429;
-  transform: translateY(-40px);
+  transform: translateY(40px);
 }
 input[type=text].balloon:focus + label:after,
 input[type=text].balloon:active + label:after {
-  border-top: 4px solid #7ab893;
+  border-bottom: 4px solid #000;
 }
-
-
-button{
-	padding: 0.5em 2em; 
-	border: 0;
-	color:white;
-	font-size: 1em;
-	margin: 1em 0 1.5em  5%;
-	opacity: 1;
- 	border-radius: 3px;
-	border-bottom:2px solid #75ce6a;	
-}
-
-button#fileSave{
-	height: 4em;
-	background-color: #98257a; 
-}
-
-button:hover{
-	border-bottom: 2px solid green;
-}
-
-
-.purple{
-	background-color: #a271c8;
-}
-
-.green{
-	background-color: #8acc36;
-}
-
-
-p{
-	color: white;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-	font-size: 18px;
-}
-
-.contents{
-	/*padding: 2em ;*/
-	background-color: rgba(255,255,255,0.3);
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-	word-wrap: wrap;
-}
-

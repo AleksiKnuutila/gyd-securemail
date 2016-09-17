@@ -3,48 +3,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Pretty Good Post</title>
+  <title>Secure Response</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="styleshe    et">
-  -->
-  <script src="/static/pgpost/js/jquery.js"></script>
-  <script src="/static/pgpost/js/pgpost_functions.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <!--Import Google Icon Font-->
-  <!--
-  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  -->
-  <!-- http://materializecss.com/ -->
-  <!-- Compiled and minified CSS -->
-  <!--
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-  -->
+
+  <script src="/static/pgpost/js/pgpost_functions.js"></script>
 
   <script type="text/javascript" src="{% static "js/jsencrypt.js" %}"></script>
   <script type="text/javascript" src="{% static "js/FileSaver.js" %}"></script>
   <script type="text/javascript" src="{% static "js/crypto.js/components/core.js" %}"></script>
   <script type="text/javascript" src="{% static "js/crypto.js/rollups/aes.js" %}"></script>
   <script type="text/javascript" src="{% static "js/crypto.js/components/enc-base64-min.js" %}"></script>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,700,900" rel="stylesheet">
+  
+  <!-- fonts -->
+<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet">
 
-  <!--Import materialize.css-->
-  <link type="text/css" rel="stylesheet" href="/static/pgpost/css/materialize.css"  media="screen,projection"/>
 
-  <!--Let browser know website is optimized for mobile-->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+  <!-- Using jquery -->
+  <script src="/static/pgpost/js/jquery.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"> </script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script> 
-  <!--
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-  -->
+
+  <!-- CUSTOM STYLES -->
+  <link rel="stylesheet" href="/static/pgpost/css/stylesBase.css">
+
+
 </head>
 <body>
+  <div class="sidebar">
+    <div class="sidebarContainer">
+      <h1> Secure </br> Response </h1>
+      <h5> Messaging, securly, without any weird apps </h5>
+ 
+      <br><br>
+      <small> > Source on <a href=" " >github </a> </small>
+
+      <br><br>
+      <button class="moreInfo">MORE INFO</button>
+      <button class="moreInfo">JOIN</button>
+      <button class="moreInfo">LOG IN</button>
+
+      <br><br><br>
+
+    </div>
+  </div>
+
   {% block body_block %}This is body_block's default content.{% endblock %}
 </body>
 </html>

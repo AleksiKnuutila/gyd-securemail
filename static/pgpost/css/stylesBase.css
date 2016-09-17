@@ -1,0 +1,108 @@
+
+/*COMMON*/
+body{
+	font-family: 'Lato', sans-serif;
+	font-weight: normal;
+	color: rgba(0, 0, 0, 0.87);
+	font-size: 15px;
+
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+
+/* GREATER THAN MOBILE*/
+@media screen and (min-width: 900px) {
+
+  	.sidebar{
+
+		/* layout */
+		height: 100%;
+		height: 100vh;
+		max-width: 30%;
+		position: fixed;
+		top: 0;
+
+		/* ui */
+		background-color: rgb(250,250,250);
+		box-shadow: 0px 1px 10px #888888;
+		-webkit-box-shadow: 0px 1px 10px #888888;
+		-moz-box-shadow: 0px 1px 10px #888888;
+		-o-box-shadow: 0px 1px 10px #888888;	
+	}
+
+	.sidebarContainer{
+	
+		height: 93%;
+		height: 93vh;
+
+		padding-top: 5%;
+		padding-top: 5vh;
+
+		max-width: 80%;
+		margin: 0 auto;
+	
+		background-image: url('/static/pgpost/imgs/communication.svg');
+		background-size: 90%;
+		background-repeat: no-repeat;
+		background-position:  center 99%;
+
+	}
+}
+
+
+
+
+/* This are only related to UI so outside mdeia queries*/
+.sidebar h1{
+	margin: 0;
+	font-weight: 900; 
+	line-height: 0.9em;
+	font-size: 4.1rem;
+}
+
+.sidebar h5{
+	font-weight: 300;
+	font-size: 1.5rem;
+	line-height: 110%;
+	margin: 0.82rem 0 0.656rem 0;
+}
+
+small{
+	font-size: 75%;
+}
+
+ button{
+	background-color: transparent;
+	font-weight: 700;
+	padding: 0.4em 1em;
+	border: 2px solid #444;
+	color:  #444;
+	border-radius: 0;
+	margin: 0;
+	margin-bottom: 0.25em;
+	margin-right: 0.25em;
+
+	cursor: pointer;
+}
+
+button:hover{
+	background-color: #111;
+	border: 2px solid #111;
+	color: white;
+}
+
+
+
+/* UI FONT  MEDIA QUERIES */
+@media screen and (min-width: 900px) and (max-width: 1200px) {
+
+	.sidebar h1{
+		margin: 0;
+		font-weight: 900; 
+		line-height: 0.9em;
+		font-size: 3.1rem;
+	}
+
+}

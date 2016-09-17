@@ -3,66 +3,78 @@
 {% block body_block %}
 {% csrf_token %}
 
-<link rel="stylesheet" href="/static/pgpost/css/styles.css">
+  <link rel="stylesheet" href="/static/pgpost/css/styles.css">
 
-  <div class="container">
-  	<div class="row header">
-      <div style="text-align: center">
-		<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1">
-      <!--
-			<img src="/static/pgpost/key2.svg" width="50px"> Secure Email
-			<img src="/static/pgpost/key4.svg" width="50px" >
-      -->
-      Pretty Good Post
-      <img src="/static/pgpost/padlock.svg" style="-webkit-filter: invert(1); filter: invert(1);" width="40px" >
+  <div class="mainPage">
+    <div class="mainPageContainer">
 
+      <div class="textContainer">  
+       
+        <div class="backgroundTitle"> <h3 class="pageTitle"> ABOUT </h3> </div>
+        <h2 class="subtitle">
+          All you need to receive messages <br>securely is share a link.
+        </h2>
+ 	      
+        <div class="paragraph">
+          <h5> How it works: </h5>
 
-		</h3>
-        <p display="display: inline-block; padding-right: 50px" class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">
-        Receive your personal data securely, without any weird apps.
-        </p>
-      </div>
- 	</div>
+          <ol>
+            <li> First we verify your e-mail. <br> With that, our server will store your public key. <br> We will generate a private key for you to store on your computer.</li>
 
- 	<div class="row">
-      	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2 ">
-		  	<div class="valign">
-			  <p  id="part1Scroll"  class="feedbackMessage scrollspy"> 1. Let's start by confirming your email adress </p>
-			  <span>
-			    <input class="balloon " id="email" type="text" placeholder="myname@example.com" /><label for="email">Email</label>
-			  </span>
-				<br><button class="green" onclick="sendConfirmationEmail()"> get confirmation code</button>
-				<a id="linktopart2" href="#part2Scroll"></a>
-    	  	</div>
-     	</div>
+            <li> After this, all a sender needs is a link from you. <br> With a simple form, they can send messages that are encrypted before leaving their browser.</li>
 
-     	<div id="part2" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l8 offset-l2">
-			<div class="valign">
-		      	<p id="part2Scroll" class="scrollspy feedbackMessage"> 2. Paste the confirmation code from your email here. </p>
-				<span>
-				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
-				</span>
-				<br><button id="part2go" class="green" onclick='checkConfirmationResponse()'> go</button>
-				<a id="linktopart3" href="#part3Scroll"></a>
-	      	</div>
-	    </div>
-
-      	<div id="part3" class="section inactive valign-wrapper col s10 offset-s1  m8 offset-m2 l6 offset-l3">
-			<div class="valign">
-        <p id="part3Scroll" class="scrollspy feedbackMessage">Now your computer creates a private key. Keep it safe.
-        </p>
-				<button id="fileSave" onclick="saveFile()"> Save private key </button>
-        <!--<p>Your computer created a private key, and sent the public key to our database.</p>-->
-        <div id="saveconfirm" style="display:none;">
-          <p>Your public key was sent to our server.</p>
-          <p>Others can now send you messages securely at this address: </p>
-        <pre style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;" id="url"></pre>
+            <li>When you receive a message, we’ll send you an e-mail. <br>You will need your private key to access the message.</li>
+          <ol>
         </div>
-			</div>
-      	</div>
 
-	</div>
+        <button >TRY IT OUT / JOIN &darr;</button>
 
+      </div>
+
+      <div class="joinBox">
+
+            <div class="backgroundTitle"> <h3 class="pageTitle"> JOIN </h3> </div>
+            <h2 class="subtitle">
+              All you need to receive messages <br>securely is share a link.
+            </h2>
+
+          	<div id="part1" class="active part">
+                <!-- <div class="indicator" style="height:2em;width:5px;background-color:#daeff3"></div> -->
+        			  <p  id="part1Scroll">1. First we verify your e-mail. <br> We won't spam you or anything like that!</p>
+        			  
+                <span>
+          			    <input class="balloon " id="email" type="text" placeholder="myname@example.com" />
+                    <label for="email">Email</label>
+        			  </span>
+        				<button onclick="sendConfirmationEmail()"> get confirmation code</button>
+        			  <div class="errorbox"> *<b>Ooops </b> Wrong email stuff</div>
+            </div>
+
+           	<div id="part2" class="part inactive">
+                <!-- <div class="indicator" style="height:2em;width:5px;background-color:#daeff3"></div> -->
+      		      	<p id="part2Scroll" class="feedbackMessage">2. Paste the confirmation code from your email here. </p>
+      			     	<span>
+        				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
+      			     	</span>
+        				  <button id="part2go" class="green" onclick='checkConfirmationResponse()'> go</button>
+	                <div class="errorbox"> *<b>Ooops </b> Wrong confirmation stuff</div>
+      	     	</div>
+      	    </div>
+
+            <div id="part3" class="part inactive">
+                <p id="part3Scroll" class="scrollspy feedbackMessage">Now your computer creates a private key. Keep it safe!
+                </p>
+      				 <button id="fileSave" onclick="saveFile()"> Save private key </button>
+               <div id="saveconfirm" style="display:none;">
+                <p>Your public key was sent to our server. <br>
+                Others can now send you messages securely at this address: </p>
+                   <pre style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;background-color:white;padding:0.5em;" id="url"></pre>
+               </div>
+            	</div>
+
+      	<!-- </div> -->
+  
+    </div>
 </div>
 
 
