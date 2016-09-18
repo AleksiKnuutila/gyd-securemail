@@ -27,27 +27,40 @@
           <ol>
         </div>
 
-        <button >TRY IT OUT / JOIN &darr;</button>
+        <!-- These two paragraphs are only shown if the MORE INFO button is pressed -->
+        <div class="paragraph tooMuchInfo" style="display:none">
+          <h5> Why make this? </h5>
+          <p> Seque rem aut et alis solesseditae dolore sam quae volupta viditatios pliciducit, aditaspid unt, opturis quibusciet rerit aut qui del imusam aut velenda peria cus conserf erferum quam </p>
+        </div>
 
+        <div class="paragraph tooMuchInfo" style="display:none">
+          <h5> Known Limitations: </h5>
+          <p> Seque rem aut et alis solesseditae dolore sam quae volupta viditatios pliciducit, aditaspid unt, opturis quibusciet rerit aut qui del imusam aut velenda peria cus conserf erferum quam </p>
+        </div>
+
+          <button onclick="joinFunction()" >TRY IT OUT / JOIN &darr;</button>
+    
       </div>
 
-      <div class="joinBox">
+
+
+      <div class="joinBox" style="display:none">
 
             <div class="backgroundTitle"> <h3 class="pageTitle"> JOIN </h3> </div>
             <h2 class="subtitle">
               All you need to receive messages <br>securely is share a link.
             </h2>
 
-          	<div id="part1" class="active part">
+          	<div id="part1" class="part">
                 <!-- <div class="indicator" style="height:2em;width:5px;background-color:#daeff3"></div> -->
-        			  <p  id="part1Scroll">1. First we verify your e-mail. <br> We won't spam you or anything like that!</p>
-        			  
+        			  <p  id="part1Scroll">1. First we verify your e-mail. <br> We won't spam you or anything like that!</p>  
                 <span>
           			    <input class="balloon " id="email" type="text" placeholder="myname@example.com" />
                     <label for="email">Email</label>
         			  </span>
         				<button onclick="sendConfirmationEmail()"> get confirmation code</button>
-        			  <div class="errorbox"> *<b>Ooops </b> Wrong email stuff</div>
+        			  <div class="errorbox"> </div>  <!--*<b>Ooops </b> Wrong email stuff  -->
+
             </div>
 
            	<div id="part2" class="part inactive">
@@ -57,21 +70,20 @@
         				    <input class="balloon" id="confirmation" type="text" placeholder="eg. FFAXGBSE" /><label for="confirmation">Confirmation code</label>
       			     	</span>
         				  <button id="part2go" class="green" onclick='checkConfirmationResponse()'> go</button>
-	                <div class="errorbox"> *<b>Ooops </b> Wrong confirmation stuff</div>
-      	     	</div>
-      	    </div>
-
+	                <div class="errorbox"></div>
+              </div>
+      	     
             <div id="part3" class="part inactive">
-                <p id="part3Scroll" class="scrollspy feedbackMessage">Now your computer creates a private key. Keep it safe!
+                <p id="part3Scroll" class=" feedbackMessage">3. Now your computer creates a private key. Keep it safe!
                 </p>
-      				 <button id="fileSave" onclick="saveFile()"> Save private key </button>
+      				 <button id="fileSave" onclick="saveFile()"> Save private key <img src="/static/pgpost/padlock.svg" ></button>
                <div id="saveconfirm" style="display:none;">
                 <p>Your public key was sent to our server. <br>
                 Others can now send you messages securely at this address: </p>
                    <pre style="white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap;white-space: -o-pre-wrap; word-wrap: break-word;background-color:white;padding:0.5em;" id="url"></pre>
                </div>
             	</div>
-
+            </div>
       	<!-- </div> -->
   
     </div>
@@ -80,30 +92,48 @@
 
 	<script>
 
-		 $(document).ready(function(){
-		    $('.scrollspy').scrollSpy();
-        $('#part2').hide();
-        $('#part3').hide();
-		  });
+    var proc = 1;
+
+    function moreInfoFunction() {
+      
+      $('.part').removeClass('active');
+      $('.joinBox').hide(200);
+      
+      $('.textContainer').css({'opacity':'0.1'});
+      
+      $('.tooMuchInfo').css('display','block');
+      $('.textContainer').show(200, function(){
+          $(this).animate({'opacity':1})
+      });
+    }
 
 
-		// Animate to next part of the 'form / process'
+    function joinFunction() {
+
+      $('.textContainer').hide(200);
+    
+      $('.joinBox').css({'opacity':'0.1'});
+
+      $('.joinBox').show(200, function(){
+          $(this).animate({'opacity':1})
+
+          $('#part'+proc).addClass('active')
+      });
+    }
+
 		function sendConfirmationEmail(){
 
 			console.log('CALLED: sendConfirmationEmail')
-
-			// If have time put animated working-on-it gif
-
 
 			//Change view styles
 			$('#part1').addClass('done');
       $('#part2').show();
 
 			$('#part1').removeClass('active');
-			$('#part1').removeClass('z-depth-5');
 			$('#part2').removeClass('inactive');
-			$('#part2').addClass('z-depth-5');
 			$('#part2').addClass('active');
+      
+      proc = 2;
 
 			//Rest of code
       csrf = $('[name="csrfmiddlewaretoken"]').val();
@@ -119,10 +149,8 @@
 
 
 			//All set to continue:
-			$('#linktopart2').click();
-
-
-		};
+			// $('#linktopart2').click();
+  	};
 
 		function checkConfirmationResponse(){
 
@@ -142,18 +170,13 @@
         $.post( "/json_addkey", post_data, function( resp ) {
           //All set to continue:
           console.log("json addkey");
+       
           //Change view styles
     			$('#part2').addClass('done');
-          $('#part3').show();
-    			$('#part2').removeClass('z-depth-5');
-    			$('#part2').removeClass('active');
+          $('#part2').removeClass('active');
     			$('#part3').removeClass('inactive');
-
-    			$('#part3').addClass('z-depth-5');
     			$('#part3').addClass('active');
-
-    			$('#linktopart3').click();
-
+          proc = 3;
         });
       }
 
@@ -204,7 +227,7 @@
           // send public key
           send_addkey();
         } else {
-          $("#part2").effect( "shake" );
+          $('#part2 .errorbox').html('*<b>Ooops </b>'+resp);
           $('#confirmation').val("");
         }
       });
@@ -220,6 +243,8 @@
       $('#saveconfirm').attr({'style':'display:block;'});
 			//Save file functionality
 		}
+
+
 
 	</script>
 

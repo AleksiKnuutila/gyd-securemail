@@ -12,47 +12,6 @@ body{
 }
 
 
-/* GREATER THAN MOBILE*/
-@media screen and (min-width: 900px) {
-
-  	.sidebar{
-
-		/* layout */
-		height: 100%;
-		height: 100vh;
-		max-width: 30%;
-		position: fixed;
-		top: 0;
-
-		/* ui */
-		background-color: rgb(250,250,250);
-		box-shadow: 0px 1px 10px #888888;
-		-webkit-box-shadow: 0px 1px 10px #888888;
-		-moz-box-shadow: 0px 1px 10px #888888;
-		-o-box-shadow: 0px 1px 10px #888888;	
-	}
-
-	.sidebarContainer{
-	
-		height: 93%;
-		height: 93vh;
-
-		padding-top: 5%;
-		padding-top: 5vh;
-
-		max-width: 80%;
-		margin: 0 auto;
-	
-		background-image: url('/static/pgpost/imgs/communication.svg');
-		background-size: 90%;
-		background-repeat: no-repeat;
-		background-position:  center 99%;
-
-	}
-}
-
-
-
 
 /* This are only related to UI so outside mdeia queries*/
 .sidebar h1{
@@ -93,6 +52,72 @@ button:hover{
 	color: white;
 }
 
+button.disabled{
+	cursor: default;
+	pointer-events: none;
+	opacity: 0.3;
+}
+
+/* GREATER THAN MOBILE*/
+@media screen and (min-width: 900px) {
+
+  	.sidebar{
+
+		/* layout */
+		height: 100%;
+		height: 100vh;
+		max-width: 30%;
+		position: fixed;
+		top: 0;
+
+		/* ui */
+		background-color: rgb(250,250,250);
+		box-shadow: 0px 1px 10px #888888;
+		-webkit-box-shadow: 0px 1px 10px #888888;
+		-moz-box-shadow: 0px 1px 10px #888888;
+		-o-box-shadow: 0px 1px 10px #888888;	
+	}
+
+	.sidebarContainer{
+	
+		height: 93%;
+		height: 93vh;
+
+		padding-top: 5%;
+		padding-top: 5vh;
+
+		max-width: 80%;
+		margin: 0 auto;
+	
+		background-image: url('/static/pgpost/imgs/communication.svg');
+		background-size: 90%;
+		background-repeat: no-repeat;
+		background-position:  center 99%;
+
+	}
+}
+
+@media screen and (max-width: 900px) {
+
+	  	.sidebar{
+			/* ui */
+			background-color: rgb(250,250,250);	
+		}	
+
+		.sidebarContainer{
+			/*layout*/
+			max-width: 90%;
+			margin: 0 auto;
+			padding-top: 2em;
+		}
+
+		 button{
+			padding: 1em 1.5em;
+			margin-bottom: 0.5em;
+			margin-right: 0.5em;
+		}
+}
+
 
 
 /* UI FONT  MEDIA QUERIES */
@@ -106,3 +131,4 @@ button:hover{
 	}
 
 }
+
