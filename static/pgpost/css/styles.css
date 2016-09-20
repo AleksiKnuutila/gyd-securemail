@@ -1,6 +1,6 @@
 
 .backgroundTitle{
-  background-color: #111111;
+  background-color: #666666;
   display: inline-block;
 }
 
@@ -99,23 +99,25 @@ h3{
 	color: #ffffff;
 }
 
-.part button{
+.part button, 
+.custom-file-upload{
   padding: 10px;
   margin: 0;
-
   display: inline-block;
   vertical-align: top;
   line-height: 16px;
   background-color: white;
+  cursor: pointer;
 }
 
-.part button:hover{
+.part button:hover, 
+.custom-file-upload:hover{
    background-color: #111;
    color: white;
-
 }
 
-#fileSave {
+#fileSave,
+.custom-file-upload {
   text-transform: uppercase;
   font-size:1em;
 }
@@ -125,11 +127,23 @@ h3{
   filter: invert(0%);
 }
 
-#fileSave:hover img{
+.custom-file-upload img{
+    width:1em;
+    filter: invert(0%);
+}
+
+#fileSave:hover img,
+.custom-file-upload:hover img{
   filter: invert(100%);
 }
 
+.custom-file-upload{
+  border: 2px solid #111111;
+  font-weight: 600;
+      padding: 8px 10px  8px   8px ;
 
+  font-size: 1em;
+}
 
 .joinBox span {
   position: relative;
@@ -180,7 +194,6 @@ input[type=text].balloon + label {
   text-transform: uppercase;
   text-shadow: 0 1px 0 rgba(19, 74, 70, 0);
   transition: all .3s ease-in-out;
-  /*border-radius: 3px;*/
   background: rgba(122, 184, 147, 0);
 }
 

@@ -96,6 +96,11 @@
 
     function moreInfoFunction() {
       
+      // Update navigation menu
+      $('.navBtns').removeClass('active');
+      $('#moreinfoBtn').addClass('active');
+
+      //Show more info page
       $('.part').removeClass('active');
       $('.joinBox').hide(200);
       
@@ -110,8 +115,12 @@
 
     function joinFunction() {
 
-      $('.textContainer').hide(200);
-    
+      // Update navigation menu
+      $('.navBtns').removeClass('active');
+      $('#joinBtn').addClass('active');
+
+      //Show join page page
+      $('.textContainer').hide(200);    
       $('.joinBox').css({'opacity':'0.1'});
 
       $('.joinBox').show(200, function(){

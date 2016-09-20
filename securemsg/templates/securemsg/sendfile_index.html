@@ -2,45 +2,42 @@
 
 {% block body_block %}
 
+  <link rel="stylesheet" href="/static/pgpost/css/styles.css">
   <link rel="stylesheet" href="/static/pgpost/css/stylesResponse.css">
 
-	<div class="container">
-    <div style="text-align: center">
-
-	  	<div class="row header">
-		<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1">
-      <!--
-			<img src="/static/pgpost/key2.svg" width="50px"> Secure mail
-			<img src="/static/pgpost/key4.svg" width="50px" >
-      -->
-      Pretty Good Post
-      <img src="/static/pgpost/padlock.svg" style="-webkit-filter: invert(1); filter: invert(1);" width="40px" > </h3>
-
-		<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Send personal data securely, without any weird apps.</p>
-	 	</div>
-	 	</div>
-
- 		<div class="row">
-			<div id="part1" class="col formEntries section valign-wrapper s10 m10 l10 offset-m1 offset-s1 offset-l1">
-				<div class="valign">
-						<p class="explanationText" style="width: 600px">This is a response to a data request from <span id="fromwhom" class="highlightText"></span>.
-						<br>
-            <label for="fileselect" style="float: left" class="custom-file-upload green">ATTACH FILES</label><div style="margin-top: 46px; color: black; display: none;" id="encryptConfirmation" class="explanationText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File attached and encrypted.</div>
-   					<input type="file" id="fileselect" class="green" style="display:none" onchange="afterClick()">
-            <!--<button id="attachDataButton" onclick="attachFile()"> ATTACH FILES</button>-->
-						</p>
-						<div class="formTextContainer">
-							<input id="contactInfo" type="text"  class="contactInfo" placeholder="contact info">
-						    <textarea id="message" class="balloon " id="message" type="text" placeholder="Response" ></textarea>
-						</div>
-						<button id="sendForm" class="black"> SEND</button>
-					</div>
+	  <div class="mainPage">
+      <div class="mainPageContainer">
+        <div class="textContainer">  
+         
+          <div class="backgroundTitle"> <h3 class="pageTitle"> DATA REQUEST </h3> </div>
+          <h2 class="subtitle">
+           This is a response form to a data request from <span id="" class="highlightText fromwhom"></span>.
+          </h2>
+          
+          <p class="explanationText">
+                Use this form in order to securely reply to  <span  class=" fromwhom highlightText"></span>'s request for communication. You can write a message and attach sensitive information as files. Once you hit send only they will be able to decode it.<br> Add your personal contact info if you wish for a further reply.
+          </p>
+            
+          <div class="part">
+             
+            <label for="fileselect" class="custom-file-upload"><img src="/static/pgpost/imgs/attach_file.svg"> ATTACH FILES </label>
+         
+            <div style="margin-top: 46px; color: black; display: none;" id="encryptConfirmation" class="explanationText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File attached and encrypted.</div>
+   					
+            <input type="file" id="fileselect" class="" style="display:none" onchange="afterClick()">
+  					
+  					<div class="formTextContainer">
+  						<input id="contactInfo" type="text"  class="contactInfo" placeholder="Your contact information">
+  					    <textarea id="message" id="message" type="text" placeholder="Response Mesage" ></textarea>
+  					</div>
+  			
+        		<button id="sendForm" class="black"> SEND</button>
+          </div>
 				</div>
 			</div>
 
 		</div>
 
-	<div>
 
 {% csrf_token %}
 
@@ -48,16 +45,10 @@
 			</div>
 		</div>
 
-		<!-- <div class="part3">
-			<p> Your secret file XXXXXXX has been saved.</p>
-			<p> Keep it somewhere where you can remember. You ll need it to open the response..</p>
-
-		</div> -->
-
 	<script>
 
 emailadd = urlParam('email');
-$('#fromwhom').text(emailadd);
+$('.fromwhom').text(emailadd);
 
     // define the characters to pick from
     var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz*&-%/!?*+=()";
@@ -148,25 +139,6 @@ $('#fromwhom').text(emailadd);
 
     }
 
-		// Animate to next part of the 'form / process'
-// is this happening on this screen??
-//		function shownext(){
-//
-//		    $(".part1 input").animate({left: "-=100%"},350);
-//		    $(".part1 button").animate({left: "-=100%"},350);
-//
-//		    $(".part2 input").animate({left: "-=100%"},350);
-//		    $(".part2 button").animate({left: "-=100%"},350);
-//		    $(".part2 div").animate({left: "-=100%"},350);
-//		};
-//
-//		function confirmationResponse(){
-//
-//			// Save file or something here...
-//
-//			// Show message
-//			$('.part3').css('display','block');
-//		}
 
     var readfile = function readfile() {
       var file = document.getElementById("fileselect").files[0];
@@ -196,26 +168,6 @@ $('#fromwhom').text(emailadd);
 
 
 
-	<script>
-
-		// Animate to next part of the 'form / process'
-		function attachFile(){
-			console.log('attach')
-
-			// Upload File Fucntionality
-
-
-
-		};
-
-		function send(){
-
-			console.log('send')
-			// Save file or something here...
-
-		}
-
-	</script>
 
 
 </body>
