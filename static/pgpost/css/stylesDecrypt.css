@@ -1,226 +1,45 @@
-body{
-	background-color: #ededed;
-	font-family: 'Roboto', sans-serif;
-	font-size: 16px;
-}
 
 #theMessage{
-    border:1px solid white;
-    background-color: rgba(255,255,255,0.9);
-    border-radius: 2px;
-    padding: 40px;
-}
-
-#theMessage p{
-  color: black;
+  color:  #25acd5;
   text-align: left;
   font-size: 16px;
-  font-family: serif;
-}
-
-.container{
-	background-color: #032429;
-}
-
-.header{
-	margin-bottom: 3em;
-}
-
-.subtitle{
-	margin: 0 auto;
-}
-
-.section{
-	margin-bottom: 8vh;
-}
-
-.valign{
-	margin:0 auto;
-}
-
-#part1,#part2{
-	min-height: 60vh;
-	text-align: center;
-}
-
-#part2{
-	margin-bottom: 20vh;
-  display: none;
-  padding: 5%;
-}
-
-.active{
-	background-color: #75ce6a;
-}
-
-.done,.inactive{
-	opacity: 0.4;
-}
-
-.inactive{
-	  pointer-events: none;
-}
-
-h3{
-	color: #ffffff;
-}
-
-.feedbackMessage{
-	font-size: 24px;
-	margin-bottom: 1.5em;
-}
-
-.extraFeedbackMessage{
-	max-width: 90%;
-	margin-left: auto;
-	margin-right: auto;
+  /*font-family: monospace;*/
 }
 
 
-.row span {
-  position: relative;
-  display: inline-block;
-  /*margin: 30px 10px;*/
-}
-
-input[type=text].balloon {
-  display: inline-block;
-  width: 320px;
-  padding: 10px 0 10px 15px;
-  font-family: "Open Sans", sans;
-  font-weight: 400;
-  font-size: 1em;
-  color: #377D6A;
-  background: #efefef;
-  border: 0;
-  border-radius: 3px;
-  outline: 0;
-  text-indent: 60px;
-  transition: all .3s ease-in-out;
-  height:auto;
+#part2.active{
+  border:1px solid  #daeff3;
+  background-color: transparent;
+  max-width: 90%;
   margin: 0 auto;
 }
-input[type=text].balloon::-webkit-input-placeholder {
-  color: #efefef;
-  text-indent: 0;
-  font-weight: 300;
+
+#fileSave{
+  color:  #25acd5;
+  text-transform: unset;
+  border:0px;
+  padding:0;
+  margin: 0;
 }
-input[type=text].balloon + label {
+#fileSave:hover{
+  color:  #25acd5;
+  background-color: #ffffff;
+  text-decoration: underline;
+}
+
+.tip{
   display: inline-block;
-  position: absolute;
-  top: 8px;
-  left: 0;
-  bottom: 8px;
-  padding: 5px 15px;
-  color: #032429;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 rgba(19, 74, 70, 0);
-  transition: all .3s ease-in-out;
-  /*border-radius: 3px;*/
-  background: rgba(122, 184, 147, 0);
+  vertical-align: top;
+  margin: 0.5em 0;
+  font-style: italic;
+  color: #444;
+  font-size: 0.9em;
+  font-family:  "Lato",​sans-serif;
 }
 
-input[type=text].balloon + label:after {
-  position: absolute;
-  content: "";
-  width: 0;
-  height: 0;
-  top: 100%;
-  left: 50%;
-  margin-left: -3px;
-  border-left: 3px solid transparent;
-  border-right: 3px solid transparent;
-  border-top: 3px solid rgba(122, 184, 147, 0);
-  transition: all .3s ease-in-out;
-  opacity: 1;
-}
-
-input[type=text].balloon:focus,
-input[type=text].balloon:active {
-  color: #377D6A;
-  text-indent: 0;
-  background: #fff;
-}
-input[type=text].balloon:focus::-webkit-input-placeholder,
-input[type=text].balloon:active::-webkit-input-placeholder {
-  color: #aaa;
-}
-input[type=text].balloon:focus + label,
-input[type=text].balloon:active + label {
-  color: #fff;
-  text-shadow: 0 1px 0 rgba(19, 74, 70, 0.4);
-  background: #032429;
-  transform: translateY(-40px);
-}
-input[type=text].balloon:focus + label:after,
-input[type=text].balloon:active + label:after {
-  border-top: 4px solid #7ab893;
-}
-
-
-button{
-	padding: 0.5em 2em;
-	border: 0;
-	color:white;
-	font-size: 1em;
-	margin: 1em 0 1.5em  5%;
-	opacity: 1;
- 	border-radius: 3px;
-	border-bottom:2px solid #75ce6a;
-}
-
-button#fileSave{
-	height: 4em;
-	background-color: #98257a;
-}
-
-button:hover{
-	border-bottom: 2px solid green;
-}
-
-
-/*.purple{
-	background-color: #a271c8;
-}
-
-.green{
-	background-color: #8acc36;
-}
-
-*/
-p{
-	color: white;
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-	font-size: 18px;
-}
-
-.contents{
-	background-color: rgba(255,255,255,0.3);
-	font-family: 'Roboto', sans-serif;
-	font-weight: 100;
-	word-wrap: wrap;
-}
-
-
-input[type="file"] {
-    display: none;
-}
-
-.custom-file-upload {
-	padding: 0.5em 2em;
-	border: 0;
-	color:white;
-	font-size: 1em;
-	margin: 1em 0 1.5em  5%;
-	opacity: 1;
- 	border-radius: 3px;
-	border-bottom:2px solid #75ce6a;
-
-}
-
-.custom-file-upload:hover{
-	border-bottom: 2px solid green;
+.tip.small{
+  margin-left:40px;
+  margin-top:0;
+  color:#999999;
+  font-size: 10px;
 }

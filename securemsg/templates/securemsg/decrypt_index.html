@@ -2,59 +2,62 @@
 
 {% block body_block %}
 
-<link rel="stylesheet" href="/static/pgpost/css/stylesDecrypt.css">
+  <link rel="stylesheet" href="/static/pgpost/css/stylesResponse.css">
+  <link rel="stylesheet" href="/static/pgpost/css/styles.css">
+  <link rel="stylesheet" href="/static/pgpost/css/stylesDecrypt.css">
 
-<div class="container">
-	<div class="row header">
-    <div style="text-align: center">
-	<h3 style="text-align:center" class="col s10 m10 l10 offset-m1 offset-s1 offset-l1">
-    <!--
-		<img src="/static/pgpost/key2.svg" width="50px"> Secure mail
-		<img src="/static/pgpost/key4.svg" width="50px" >
-    -->
-    Pretty Good Post
-    <img src="/static/pgpost/padlock.svg" style="-webkit-filter: invert(1); filter: invert(1);" width="40px" > </h3>
-	</h3>
+    <div class="mainPage">
+      <div class="mainPageContainer">
+        <div class="textContainer">  
+         
+          <div class="backgroundTitle"> <h3 class="pageTitle"> YOU HAVE MAIL! </h3> </div>
+          <h2 class="subtitle">
+           This is a reply to your data request.
+          </h2>
 
-	<p class="subtitle col s10 m10 l10 offset-m1 offset-s1 offset-l1">Receive your personal data securely, without any weird apps.</p>
-	</div>
-	</div>
+           <div id="part1" class="part active">
+                <p> Select your private key file to decrypt <br> your message. <br><br>For your eyes only. </p>
+          			<br>
+                <label for="fileuploader" class="custom-file-upload green">
+                 <img src="/static/pgpost/padlock.svg" > Select key file 
+                </label>
+                <input id="fileuploader" style="display:none" type="file" onchange="uploadKeyFile()" />
 
-	<div class="row">
-    	<div id="part1" class="active z-depth-5 section valign-wrapper col s10 offset-s1  m10 offset-m1 l8 offset-l2 ">
-	  	<div class="valign">
-        <p  id="part1Scroll"  class="feedbackMessage scrollspy"> Select your private key file to decrypt <br> your message. <br><br>For your eyes only. </p>
-			<br>
-      <label for="fileuploader" class="custom-file-upload green">
-        Select key file
-      </label>
-      <input id="fileuploader" type="file" onchange="uploadKeyFile()" />
-			<a id="linktopart2" href="#part2Scroll"></a>
-  	  	</div>
-   	</div>
+        	</div>
+        
+          <p  class="successHeader"> (Your message will appear here.) </p>
 
-    <div id="part2" class="section inactive valign-wrapper col s10 offset-s1  m10 offset-m1 l10 offset-l1">
-    <div class="valign">
-          <p  class="feedbackMessage"> Your message: </p>
-      <div id="theMessage" >
-        <div id="part2Scroll" class="scrollspy" ></div>
-        <div id="senderinfodiv" style="text-align:left;">
-          <span id="senderInfo" class="sender"> From: </span>
+          <div id="part2" class="part inactive">
+              <div class="success" style="display:none"> 
+                  <div id="theMessage" >
+                    <!-- <div id="part2Scroll" class="scrollspy" ></div> -->
+                     <div id="messageinfodiv" style="text-align:left;">
+                        <span id="message" class="tip"> Message: </span>
+                        <p id="messageInfo"> </p>
+                     </div>
+                     <div id="senderinfodiv" style="text-align:left;">
+                        <div  id="senderInfo" > <span  class="tip"> From: (no info)</span> </div>
+                        <p></p>
+                     </div>
+                  </div>
+                 <img src="/static/pgpost/imgs/attach_file.svg">
+                  <button id="fileSave" onclick="saveFile()"> Get Your file </button>
+                  <br><span class="tip small" style=""> &uarr; Click to download your file</span> 
+
+              </div>
+              <div class="failure">
+                  Decryption failed :( 
+              </div>
+          </div>
         </div>
-          <p id="messageInfo">
-          Decryption failed :(
-       </div>
-      <button id="fileSave" onclick="saveFile()"> Get Your file </button>
-        </div>
+     </div>
     </div>
-  </div>
-</div>
 
 <script>
 
    $(document).ready(function(){
-      $('.scrollspy').scrollSpy();
       $('#part2').hide();
+      $('.navBtns').hide()
 
       // show spinner while the slug is loading?
       function get_datareq() {
@@ -82,8 +85,26 @@
         var b64content = datadict['data'];
         window.blob = dataURItoBlob(b64content);
         window.fn = datadict['filename'];
-        $('#senderInfo').html("From: " + datadict['from_address']);
+    
+        if(datadict['from_address'] !='' ){
+            $('#senderInfo').html(' <span class="tip">From:</span> <br>'+ datadict['from_address']);
+        }
+
         $('#messageInfo').html(datadict['message']);
+
+        // PROPER (!) ERROR checking for decrytpion failure should go here
+     
+        if(datadict['message'] == '' &&  datadict['from_address']=='' && datadict['filename']==''){
+          
+          // This never gets called at the moment
+
+        }else{
+          $('.success').css('display','block');
+          $('.successHeader').html('Your message:');
+          $('.failure').css('display','none');
+          $('#fileSave').html(''+datadict['filename']);
+        }
+
         //var blob = new Blob([content], {type: "text/plain;charset=utf-8"});
     }
 
@@ -105,14 +126,11 @@
       $('#part1').addClass('done');
 
       $('#part1').removeClass('active');
-      $('#part1').removeClass('z-depth-5');
       $('#part2').removeClass('inactive');
-      $('#part2').addClass('z-depth-5');
       $('#part2').addClass('active');
 
       //All set to continue:
       decrypt();
-      $('#linktopart2').click();
 
     }, false);
 

@@ -18,21 +18,24 @@
                 Use this form in order to securely reply to  <span  class=" fromwhom highlightText"></span>'s request for communication. You can write a message and attach sensitive information as files. Once you hit send only they will be able to decode it.<br> Add your personal contact info if you wish for a further reply.
           </p>
             
-          <div class="part">
-             
-            <label for="fileselect" class="custom-file-upload"><img src="/static/pgpost/imgs/attach_file.svg"> ATTACH FILES </label>
-         
-            <div style="margin-top: 46px; color: black; display: none;" id="encryptConfirmation" class="explanationText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;File attached and encrypted.</div>
-   					
-            <input type="file" id="fileselect" class="" style="display:none" onchange="afterClick()">
-  					
-  					<div class="formTextContainer">
-  						<input id="contactInfo" type="text"  class="contactInfo" placeholder="Your contact information">
-  					    <textarea id="message" id="message" type="text" placeholder="Response Mesage" ></textarea>
-  					</div>
-  			
-        		<button id="sendForm" class="black"> SEND</button>
+          <div class="part" id="part1">
+             <div class="partContainer">
+              <label for="fileselect" class="custom-file-upload"><img src="/static/pgpost/imgs/attach_file.svg"> ATTACH FILES </label>
+           
+              <div id="encryptConfirmation" class="explanationText"></div>
+     					
+              <input type="file" id="fileselect" class="" style="display:none" onchange="afterClick()">
+    					
+    					<div class="formTextContainer">
+    						<input id="contactInfo" type="text"  class="contactInfo" placeholder="Your contact information">
+    					    <textarea id="message" type="text" placeholder="Response Mesage" ></textarea>
+    					</div>
+    			
+          		<button id="sendForm" class="black"> SEND</button>
+              </div>
           </div>
+
+
 				</div>
 			</div>
 
@@ -46,6 +49,7 @@
 		</div>
 
 	<script>
+      $('.navBtns').hide()
 
 emailadd = urlParam('email');
 $('.fromwhom').text(emailadd);
@@ -131,10 +135,11 @@ $('.fromwhom').text(emailadd);
       $.post( "/json_addencrypted", post_data, function( resp ) {
       });
 
-    $('#part1 .valign').children().css('opacity','0')
-
-    $('#part1 .valign').css({'overflow':'hidden'}).children().animate({'visibility':'hidden', "height":'0'},80,function(){
-            $('#part1 .valign').html('<p  class="feedbackMessage"> Message Sent! The recipient is informed via email. </p>')
+    //Show confirmation of sending the data request.  
+    $('.partContainer').addClass('sent');
+    $('#part1').css({'overflow':'hidden'});
+    $('.partContainer').children().animate({"height":'0'},100,function(){
+          $('#part1 .partContainer').html('<p  class="feedbackMessage"> <span>Message Sent!</span><br> The recipient is informed via email. </p>')
     });
 
     }
@@ -157,9 +162,10 @@ $('.fromwhom').text(emailadd);
 
     var afterClick = function afterClick() {
       readfile();
-      $('#encryptConfirmation').attr({'style':'margin-top: 46px; color: black;'})
+      //Show confirmation message
+      $('#encryptConfirmation').html('<span>'+window.glob_filename + '</span>&nbsp; – file attached and encrypted!');
+        $('#encryptConfirmation').css('display','block')
     }
-    //$('#attachDataButton').click(readfile);
     $('#sendForm').click(send);
 
 	</script>

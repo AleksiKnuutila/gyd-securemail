@@ -6,7 +6,9 @@
 	background-color: rgba(255,255,255,0.3);
 	font-weight: 300;
 	font-size:15px;
-	color: black;
+	/*color: black;*/
+	color:  #25acd5;
+
 	padding: 3px 3px ;
 }
 
@@ -15,6 +17,42 @@
 
 	background-color: #1e2d48;
 	color: white;
+}
+
+#encryptConfirmation{
+	display: none;
+	margin: 0.5em 0;
+	font-style: italic;
+	color: #444;
+	font-size: 0.9em;
+}
+
+
+
+#encryptConfirmation span{
+	color:  #25acd5;
+}
+
+.partContainer.sent,
+.partContainer.sent input,
+.partContainer.sent textarea{
+	background-color: #daeff3;
+}
+
+.partContainer.sent .custom-file-upload,
+.partContainer.sent #sendForm {
+	opacity: 0;
+}
+
+
+.feedbackMessage{
+	padding: 1.5em 1em;
+	color: #111;
+	font-style: italic;
+}
+.feedbackMessage span{
+	font-weight: 600;
+	font-style: normal;
 }
 
 input.contactInfo,textarea {
@@ -26,9 +64,10 @@ input.contactInfo,textarea {
   border-radius: 2px;
   outline: 0;
  
+  font-family: "Lato",​sans-serif;
   font-weight: 400;
   font-size: 1em;
-  color: #888888;
+  color: #555555;
   background: #ffffff;
 }
 

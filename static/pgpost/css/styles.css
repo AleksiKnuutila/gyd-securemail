@@ -165,9 +165,6 @@ input[type=text].balloon {
   transition: all .3s ease-in-out;
   height:auto;
   margin: 0 auto;
-
-  /*border-radius: 3px;*/
-  /*background: #efefef;*/
 }
 
 input[type=text].balloon#confirmation{
@@ -273,12 +270,6 @@ input[type=text].balloon:active + label:after {
      max-width: 90%;
      margin: 1em auto;
   }
-
-  /*
-  .textContainer{
-    max-width: 90%;
-    margin: 0 auto
-  }*/
 
   /*UI CHANGES*/
   h2.subtitle{
