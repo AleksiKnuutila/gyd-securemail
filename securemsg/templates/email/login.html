@@ -13,7 +13,7 @@
         max-width: 100%; }
 
       body {
-        background-color: #f6f6f6;
+        background-color: #ffffff;
         font-family: sans-serif;
         -webkit-font-smoothing: antialiased;
         font-size: 14px;
@@ -38,13 +38,13 @@
       ------------------------------------- */
 
       .body {
-        background-color: #f6f6f6;
+        background-color:#ffffff;
         width: 100%; }
 
       /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
       .container {
         display: block;
-        Margin: 0 auto !important;
+        margin: 0 auto !important;
         /* makes it centered */
         max-width: 580px;
         padding: 10px;
@@ -55,7 +55,7 @@
       .content {
         box-sizing: border-box;
         display: block;
-        Margin: 0 auto;
+        margin: 0 auto;
         max-width: 580px;
         padding: 10px;
       }
@@ -64,29 +64,33 @@
           HEADER, FOOTER, MAIN
       ------------------------------------- */
       .main {
-        background: #fff;
+        background: #ffffff;
         border-radius: 3px;
         width: 100%; }
 
       .wrapper {
-        box-sizing: border-box;
-        padding: 20px;
-        background-color: rgb(3, 36, 41);
-        color: white;
+	    box-sizing: border-box;
+		padding: 30px 20px;
+		background-color: rgb(250, 250, 250);
+		color: #222222;
+		border: 1px solid #f3f3f3;
       }
 
-      .footer {
+      . .footer {
         clear: both;
         padding-top: 10px;
+        margin-bottom: 3em;
         text-align: center;
         width: 100%; }
         .footer td,
         .footer p,
         .footer span,
         .footer a {
-          color: #999999;
-          font-size: 12px;
-          text-align: center; }
+          color: #555555;
+          font-size: 11px;
+          text-align: center; 
+      	  padding-top: 10px;
+  		}
 
       /* -------------------------------------
           TYPOGRAPHY
@@ -100,7 +104,7 @@
         font-weight: 400;
         line-height: 1.4;
         margin: 0;
-        Margin-bottom: 30px; }
+        margin-bottom: 30px; }
 
       h1 {
         font-size: 35px;
@@ -113,9 +117,10 @@
       ol {
         font-family: sans-serif;
         font-size: 14px;
+        line-height: 1.5em;
         font-weight: normal;
         margin: 0;
-        Margin-bottom: 15px; }
+        margin-bottom: 15px; }
         p li,
         ul li,
         ol li {
@@ -208,12 +213,17 @@
       hr {
         border: 0;
         border-bottom: 1px solid #f6f6f6;
-        Margin: 20px 0; }
+        margin: 20px 0; }
 
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
       ------------------------------------- */
       @media only screen and (max-width: 620px) {
+     
+        .body{
+          padding-top: 3em;
+
+        }
         table[class=body] h1 {
           font-size: 28px !important;
           margin-bottom: 10px !important; }
@@ -221,17 +231,21 @@
         table[class=body] ul,
         table[class=body] ol,
         table[class=body] td,
-        table[class=body] span,
+        /*table[class=body] span,*/
         table[class=body] a {
-          font-size: 16px !important; }
+          font-size: 15px !important; }
         table[class=body] .wrapper,
         table[class=body] .article {
-          padding: 10px !important; }
+          padding: 15px !important; 
+          border:0px;
+          background-color: transparent;
+          }
         table[class=body] .content {
           padding: 0 !important; }
         table[class=body] .container {
-          padding: 0 !important;
-          width: 100% !important; }
+          /*padding: 0 !important;*/
+          /*width: 100% !important;*/
+           }
         table[class=body] .main {
           border-left-width: 0 !important;
           border-radius: 0 !important;
@@ -243,7 +257,16 @@
         table[class=body] .img-responsive {
           height: auto !important;
           max-width: 100% !important;
-          width: auto !important; }}
+          width: auto !important; }
+	    .footer table span{
+          font-size: 13px !important;
+	      }
+	    .footer{
+          margin: 2em auto 3em;
+          width: 50%;
+          padding-top: 5px;
+          border-top: 1px solid #f3f3f3;
+          }}
 
       /* -------------------------------------
           PRESERVE THESE STYLES IN THE HEAD
@@ -290,8 +313,8 @@
                   <table border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <p>Hi there,</p>
-                        <p>Here is your confirmation token for GetYourData.org's Pretty Good Post service.</p>
+                        <p>Hi there,<br>
+                        Here is your confirmation token for GetYourData.org's Secure Response service.</p>
                         <table border="0" cellpadding="0" cellspacing="0" class="">
                           <tbody>
                             <tr>
@@ -299,7 +322,7 @@
                                 <table border="0" cellpadding="0" cellspacing="0">
                                   <tbody>
                                     <tr>
-                                      <td><span style="font-size: 26px; color: rgb(117,206,106);">{{token}}</span></td>
+                                      <td><span style="font-size: 26px; color: #25acd5;">{{token}}</span></td>
                                     </tr>
                                   </tbody>
                                 </table>
