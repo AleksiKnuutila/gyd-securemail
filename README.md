@@ -15,5 +15,8 @@ Here’s how the webapp works:
    git)
 1. Install virtualenv and create a new one using `python 2.7`
 2. In the virtualenv, `pip install django==1.9.8`
-3. ...
-4. go
+3. source env/bin/activate
+4. pip install -r requirements.txt
+5. python dev_manage.py migrate
+6. ...
+7. go!
