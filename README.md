@@ -1,6 +1,6 @@
 # gyd-securemail
 
-Simple end-to-end encryption done in the browser, without need to install apps. The user only needs to share a link in order to receive files securely. The system is tentatively created for use with [getyourdata.org](getyourdata.org), as a replacement for the transmission of personal data.
+Simple end-to-end encryption done in the browser, without need to install apps. The user only needs to share a link in order to receive files securely. The system is tentatively created for use with [getyourdata.org](getyourdata.org), as a secure replacement for email in the transmission of personal data.
 
 Here’s how the webapp works:
 
