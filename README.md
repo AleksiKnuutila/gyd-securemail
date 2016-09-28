@@ -17,6 +17,6 @@ Here’s how the webapp works:
 2. In the virtualenv, `pip install django==1.9.8`
 3. source env/bin/activate
 4. pip install -r requirements.txt
-5. python dev_manage.py migrate
+5. python manage.py migrate
 6. ...
 7. go!
